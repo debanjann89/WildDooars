@@ -1,0 +1,6 @@
+DOWNLOAD REPORT - Wild Dooars Tours & Travels
+Total requested: 26
+Successfully downloaded & optimized: 26
+Failures: 0
+
+All 26 requested images were successfully downloaded, center-cropped to 1200x800 px, and compressed to <=300 KB.

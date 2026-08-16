@@ -1,0 +1,132 @@
+[
+  {
+    "target": "package_rhino_main.jpg",
+    "source": "Rhino at Jaldapara.jpg",
+    "description": "Jaldapara rhino / wildlife"
+  },
+  {
+    "target": "package_rhino_gallery1.jpg",
+    "source": "Elephant safari at Jaldapara.jpg",
+    "description": "Jaldapara elephant safari"
+  },
+  {
+    "target": "package_rhino_gallery2.jpg",
+    "source": "Towards totopara.jpg",
+    "description": "Road/landscape towards Totopara"
+  },
+  {
+    "target": "package_buxa_main.jpg",
+    "source": "Jayanti river at Buxa tiger reserve 01.jpg",
+    "description": "Jayanti River, Buxa"
+  },
+  {
+    "target": "package_buxa_gallery1.jpg",
+    "source": "Buxa fort.JPG",
+    "description": "Buxa Fort"
+  },
+  {
+    "target": "package_buxa_gallery2.jpg",
+    "source": "BUXA TIGER RESERVE.jpg",
+    "description": "Buxa Tiger Reserve"
+  },
+  {
+    "target": "package_grand_main.jpg",
+    "source": "COOCH BEHAR PALACE.jpg",
+    "description": "Cooch Behar Palace / Rajbari"
+  },
+  {
+    "target": "package_grand_gallery1.jpg",
+    "source": "Phuentsholing, Bhutan.jpg",
+    "description": "Phuentsholing, Bhutan"
+  },
+  {
+    "target": "package_grand_gallery2.jpg",
+    "source": "Samsing, Sikkim, near West Bengal border, the river and the valley 2012.jpg",
+    "description": "Samsing river and valley"
+  },
+  {
+    "target": "package_romantic_main.jpg",
+    "source": "River Murti.jpg",
+    "description": "Murti River and forest"
+  },
+  {
+    "target": "package_romantic_gallery1.jpg",
+    "source": "Suntalekhola.jpg",
+    "description": "Suntalekhola"
+  },
+  {
+    "target": "package_romantic_gallery2.jpg",
+    "source": "Woodhouse at Suntalekhola Kalimpong West Bengal.jpg",
+    "description": "Suntalekhola lodge/woodhouse"
+  },
+  {
+    "target": "package_family_main.jpg",
+    "source": "গজলডোবা.jpg",
+    "description": "Gajoldoba"
+  },
+  {
+    "target": "package_family_gallery1.jpg",
+    "source": "Toyota Innova.jpg",
+    "description": "Toyota Innova"
+  },
+  {
+    "target": "package_family_gallery2.jpg",
+    "source": "Cooch Behar Palace with waterbody on its back side, Cooch Behar Town, West Bengal, India 09.jpg",
+    "description": "Cooch Behar Palace and waterbody"
+  },
+  {
+    "target": "dest_jaldapara.jpg",
+    "source": "Rhino at Jaldapara.jpg",
+    "description": "Jaldapara National Park"
+  },
+  {
+    "target": "dest_buxa.jpg",
+    "source": "Jayanti river at Buxa tiger reserve 01.jpg",
+    "description": "Buxa / Jayanti"
+  },
+  {
+    "target": "dest_coochbehar.jpg",
+    "source": "COOCH BEHAR PALACE.jpg",
+    "description": "Cooch Behar Rajbari"
+  },
+  {
+    "target": "dest_phuentsholing.jpg",
+    "source": "Phuentsholing, Bhutan.jpg",
+    "description": "Phuentsholing"
+  },
+  {
+    "target": "dest_gorumara.jpg",
+    "source": "GORUMARA NATIONAL PARK.jpg",
+    "description": "Gorumara National Park"
+  },
+  {
+    "target": "car_innova.jpg",
+    "source": "Toyota Innova.jpg",
+    "description": "Toyota Innova"
+  },
+  {
+    "target": "car_bolero.jpg",
+    "source": "Mahindra Bolero from above.jpg",
+    "description": "Mahindra Bolero"
+  },
+  {
+    "target": "car_sumo.jpg",
+    "source": "Tata sumo.jpg",
+    "description": "Tata Sumo"
+  },
+  {
+    "target": "car_ertiga.jpg",
+    "source": "Suzuki Ertiga.jpg",
+    "description": "Suzuki Ertiga"
+  },
+  {
+    "target": "car_dzire.jpg",
+    "source": "Maruti Suzuki Swift Dzire.jpg",
+    "description": "Maruti Suzuki Swift Dzire"
+  },
+  {
+    "target": "car_wagonr.jpg",
+    "source": "Maruti Suzuki - wagonR.JPG",
+    "description": "Maruti Suzuki WagonR"
+  }
+]
