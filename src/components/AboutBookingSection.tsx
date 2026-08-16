@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, MapPin, Car, Compass, Send, CheckCircle2, ShieldCheck, Trees, Award, Users, HeartHandshake } from 'lucide-react';
+import { Calendar, Clock, MapPin, Car, Compass, Send, ShieldCheck, Trees, Award, Users, HeartHandshake } from 'lucide-react';
 import type { BusinessSettings } from '../types';
 
 interface AboutBookingSectionProps {
-  settings: BusinessSettings;
+  settings?: BusinessSettings | null;
   onOpenEnquiry: (contextData?: { vehiclePreference?: string; tripType?: string }) => void;
 }
 
-export const AboutBookingSection: React.FC<AboutBookingSectionProps> = ({ settings, onOpenEnquiry }) => {
+export const AboutBookingSection: React.FC<AboutBookingSectionProps> = ({ onOpenEnquiry }) => {
   const [activeTab, setActiveTab] = useState<'car' | 'holidays'>('car');
 
   const [pickupLoc, setPickupLoc] = useState('');

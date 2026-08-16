@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Clock, MapPin, CheckCircle2, XCircle, Send, MessageCircle, Info, ShieldCheck, ArrowLeft, Trees } from 'lucide-react';
+import { Clock, MapPin, CheckCircle2, XCircle, Send, MessageCircle, Info, ShieldCheck } from 'lucide-react';
 import { apiService } from '../services/api';
 import type { Package, BusinessSettings } from '../types';
 
 interface PackageDetailPageProps {
-  settings: BusinessSettings;
+  settings?: BusinessSettings | null;
   onOpenEnquiry: (contextData?: { title?: string; destination?: string; tripType?: string }) => void;
 }
 
@@ -46,7 +46,7 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({ settings, 
     );
   }
 
-  const whatsappPackageUrl = `https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(
+  const whatsappPackageUrl = `https://wa.me/${settings?.whatsapp || '918116442729'}?text=${encodeURIComponent(
     `Hello Wild Dooars Tours & Travels, I am interested in [${pkg.name}]. Please share availability and details.`
   )}`;
 

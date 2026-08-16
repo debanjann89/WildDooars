@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Compass, Star, Tag, Calendar, ShieldCheck } from 'lucide-react';
+import { Star, Tag, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { Package } from '../types';
 

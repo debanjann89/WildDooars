@@ -1,12 +1,12 @@
 import React from 'react';
-import { ShieldCheck, MapPin, Car, Home, PhoneCall, Trees } from 'lucide-react';
+import { MapPin, Trees, Car, Home, PhoneCall } from 'lucide-react';
 import type { BusinessSettings } from '../types';
 
 interface TrustStripProps {
-  settings: BusinessSettings;
+  settings?: BusinessSettings;
 }
 
-export const TrustStrip: React.FC<TrustStripProps> = ({ settings }) => {
+export const TrustStrip: React.FC<TrustStripProps> = () => {
   const trustPoints = [
     {
       icon: MapPin,

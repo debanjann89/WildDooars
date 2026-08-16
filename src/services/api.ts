@@ -1,4 +1,4 @@
-import type { Package, Destination, SafariInfo, Vehicle, Hotel, BusinessSettings, Enquiry, MediaItem } from '../types';
+import type { Package, Destination, SafariInfo, Vehicle, Hotel, BusinessSettings, Enquiry } from '../types';
 import { initialSettings, initialDestinations, initialPackages, initialSafaris, initialVehicles, initialHotels, initialEnquiries } from './mockData';
 
 const STORAGE_KEYS = {

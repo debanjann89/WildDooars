@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { MapPin, Phone, MessageCircle, Mail, Send, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { MapPin, Phone, MessageCircle, Send, CheckCircle2 } from 'lucide-react';
 import { apiService } from '../services/api';
 import type { BusinessSettings } from '../types';
 
 interface ContactPageProps {
-  settings: BusinessSettings;
+  settings?: BusinessSettings | null;
 }
 
 export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
@@ -47,7 +47,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
     }
   };
 
-  const whatsappUrl = `https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(
+  const phoneNum = settings?.phone || '081164 42729';
+  const whatsappNum = settings?.whatsapp || '918116442729';
+  const businessName = settings?.businessName || 'Wild Dooars Tours & Travels';
+  const address = settings?.address || 'Near Jaldapara National Park, Badaitari, Khauchandpara, West Bengal 735220';
+  const plusCode = settings?.plusCode || 'J7F5+25 Badaitari, West Bengal';
+
+  const whatsappUrl = `https://wa.me/${whatsappNum}?text=${encodeURIComponent(
     'Hello Wild Dooars Tours & Travels, I would like to plan a trip to Dooars. Please get in touch.'
   )}`;
 
@@ -58,7 +64,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
         <div className="sec-title centered max-w-3xl mx-auto mb-12">
           <span className="section-tag">Get In Touch</span>
           <h2>
-            Contact <span>Wild Dooars Tours & Travels</span>
+            Contact <span>{businessName}</span>
           </h2>
           <div className="desc-text">
             We are located near Jaldapara National Park. Call us, WhatsApp us, or send an enquiry form to plan your Dooars trip.
@@ -78,10 +84,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
                   Call Us Directly
                 </span>
                 <a
-                  href={`tel:${settings.phone.replace(/\s+/g, '')}`}
+                  href={`tel:${phoneNum.replace(/\s+/g, '')}`}
                   className="text-xl font-extrabold text-slate-900 hover:text-[#15803d] block mb-1"
                 >
-                  {settings.phone}
+                  {phoneNum}
                 </a>
                 <span className="text-xs text-slate-500">Available daily for calls & travel assistance</span>
               </div>
@@ -102,7 +108,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
                   rel="noopener noreferrer"
                   className="text-lg font-extrabold text-[#15803d] hover:text-[#166534] block mb-1"
                 >
-                  +{settings.whatsapp}
+                  +{whatsappNum}
                 </a>
                 <span className="text-xs text-slate-500">Fast response for package & vehicle quotes</span>
               </div>
@@ -117,16 +123,16 @@ export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
                 <span className="text-xs font-extrabold uppercase text-slate-500 tracking-wider block mb-1">
                   Office Location
                 </span>
-                <h4 className="text-sm font-extrabold text-slate-900 mb-1">{settings.businessName}</h4>
-                <p className="text-xs text-slate-600 leading-relaxed mb-2">{settings.address}</p>
+                <h4 className="text-sm font-extrabold text-slate-900 mb-1">{businessName}</h4>
+                <p className="text-xs text-slate-600 leading-relaxed mb-2">{address}</p>
                 <span className="inline-block bg-emerald-50 text-[#15803d] text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-emerald-200">
-                  Plus Code: {settings.plusCode}
+                  Plus Code: {plusCode}
                 </span>
               </div>
             </div>
 
             {/* Facebook Card */}
-            {settings.facebookUrl && (
+            {settings?.facebookUrl && (
               <a
                 href={settings.facebookUrl}
                 target="_blank"

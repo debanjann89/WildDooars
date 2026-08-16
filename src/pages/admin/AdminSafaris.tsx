@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Trees, Plus, Edit2, Trash2, Save, X } from 'lucide-react';
+import { Plus, Edit2, Trash2, Save, X } from 'lucide-react';
 import { apiService } from '../../services/api';
 import type { SafariInfo } from '../../types';
 
 export const AdminSafaris: React.FC = () => {
   const [safaris, setSafaris] = useState<SafariInfo[]>([]);
-  const [editingSafari, setEditingSafari] = useState<Partial<SafariInfo>> | null>(null);
+  const [editingSafari, setEditingSafari] = useState<Partial<SafariInfo> | null>(null);
 
   useEffect(() => {
     loadSafaris();

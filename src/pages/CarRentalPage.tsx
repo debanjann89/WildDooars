@@ -1,5 +1,5 @@
 import React from 'react';
-import { Car, Users, CheckCircle2, Send, ShieldCheck } from 'lucide-react';
+import { Car, Users, ShieldCheck } from 'lucide-react';
 import type { Vehicle } from '../types';
 
 interface CarRentalPageProps {

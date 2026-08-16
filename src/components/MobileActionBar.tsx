@@ -1,5 +1,11 @@
 import React from 'react';
+import type { BusinessSettings } from '../types';
 
-export const MobileActionBar: React.FC = () => {
+interface MobileActionBarProps {
+  settings?: BusinessSettings | null;
+  onOpenEnquiry?: () => void;
+}
+
+export const MobileActionBar: React.FC<MobileActionBarProps> = () => {
   return null;
 };

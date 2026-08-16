@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Inbox, Phone, MessageCircle, Trash2, Calendar, Users, MapPin, Tag, Plus, Check } from 'lucide-react';
+import { Inbox, Phone, MessageCircle, Trash2 } from 'lucide-react';
 import { apiService } from '../../services/api';
 import type { Enquiry } from '../../types';
 

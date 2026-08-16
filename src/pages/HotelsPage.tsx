@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Hotel as HotelIcon, MapPin, CheckCircle2, Send } from 'lucide-react';
+import { Hotel as HotelIcon, MapPin } from 'lucide-react';
 import type { Hotel } from '../types';
 
 interface HotelsPageProps {

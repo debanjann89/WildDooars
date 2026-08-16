@@ -12,12 +12,12 @@ import { FAQSection } from '../components/FAQSection';
 import type { Package, Destination, Vehicle, Hotel, SafariInfo, BusinessSettings } from '../types';
 
 interface HomePageProps {
-  settings: BusinessSettings;
+  settings?: BusinessSettings | null;
   packages: Package[];
   destinations: Destination[];
   vehicles: Vehicle[];
-  hotels: Hotel[];
-  safaris: SafariInfo[];
+  hotels?: Hotel[];
+  safaris?: SafariInfo[];
   onOpenEnquiry: (contextData?: { title?: string; destination?: string; tripType?: string; vehiclePreference?: string; hotelPreference?: string }) => void;
 }
 
@@ -26,14 +26,12 @@ export const HomePage: React.FC<HomePageProps> = ({
   packages,
   destinations,
   vehicles,
-  hotels,
-  safaris,
   onOpenEnquiry,
 }) => {
   return (
     <div className="w-full font-sans">
       {/* 1. Main Slider Hero Banner */}
-      <Hero settings={settings} onOpenEnquiry={() => onOpenEnquiry()} />
+      <Hero settings={settings || undefined} onOpenEnquiry={() => onOpenEnquiry()} />
 
       {/* 2. Our Awesome Services */}
       <ServicesSection onOpenEnquiry={onOpenEnquiry} />
@@ -54,10 +52,10 @@ export const HomePage: React.FC<HomePageProps> = ({
       <LatestVehiclesSection vehicles={vehicles} onOpenEnquiry={onOpenEnquiry} />
 
       {/* 8. About Wild Dooars & Quick Booking Widget */}
-      <AboutBookingSection settings={settings} onOpenEnquiry={onOpenEnquiry} />
+      <AboutBookingSection settings={settings || undefined} onOpenEnquiry={onOpenEnquiry} />
 
       {/* 9. Questions Support Strip */}
-      <QuestionsSupportStrip settings={settings} />
+      <QuestionsSupportStrip settings={settings || undefined} />
 
       {/* 10. Frequently Asked Questions */}
       <FAQSection />

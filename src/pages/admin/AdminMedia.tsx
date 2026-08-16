@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image as ImageIcon, Upload, Trash2, Copy, Check } from 'lucide-react';
+import { Upload, Copy, Check } from 'lucide-react';
 
 export const AdminMedia: React.FC = () => {
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null);

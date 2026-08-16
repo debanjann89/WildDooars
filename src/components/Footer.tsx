@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, Clock, Lock, Trees, Compass } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Lock, Compass } from 'lucide-react';
 import type { BusinessSettings } from '../types';
 
 interface FooterProps {

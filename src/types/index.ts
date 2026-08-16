@@ -57,7 +57,7 @@ export interface Vehicle {
   name: string;
   seatingCapacity: string;
   fuelType: string;
-  acType: 'AC' | 'Non-AC' | 'Both Available';
+  acType: 'AC' | 'Non-AC' | 'Both Available' | 'Non-AC / AC';
   features: string[];
   image: string;
   isPublished?: boolean;

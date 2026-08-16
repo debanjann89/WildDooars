@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Send, Calendar, Users, MapPin, Phone, User, Mail, CheckCircle2, ShieldCheck, MessageCircle } from 'lucide-react';
+import { X, Send, Calendar, MapPin, Phone, User, CheckCircle2, ShieldCheck, MessageCircle } from 'lucide-react';
 import { apiService } from '../services/api';
 import type { BusinessSettings } from '../types';
 

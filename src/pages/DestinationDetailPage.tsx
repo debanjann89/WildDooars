@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Compass, Send, CheckCircle2, ShieldCheck, ArrowLeft, Camera, Trees } from 'lucide-react';
+import { Send, ShieldCheck, Camera, Trees } from 'lucide-react';
 import { apiService } from '../services/api';
 import type { Destination, BusinessSettings } from '../types';
 
 interface DestinationDetailPageProps {
-  settings: BusinessSettings;
+  settings?: BusinessSettings | null;
   onOpenEnquiry: (contextData?: { destination?: string; tripType?: string }) => void;
 }
 
@@ -172,7 +172,7 @@ export const DestinationDetailPage: React.FC<DestinationDetailPageProps> = ({ se
               </button>
 
               <a
-                href={`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(
+                href={`https://wa.me/${settings?.whatsapp || '918116442729'}?text=${encodeURIComponent(
                   `Hello Wild Dooars Tours & Travels, I am interested in visiting [${dest.name}]. Please share travel details.`
                 )}`}
                 target="_blank"

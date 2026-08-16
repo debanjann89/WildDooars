@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { BusinessSettings } from '../types';
 
 interface HeroProps {
-  settings: BusinessSettings;
+  settings?: BusinessSettings;
   onOpenEnquiry: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ settings, onOpenEnquiry }) => {
+export const Hero: React.FC<HeroProps> = ({ onOpenEnquiry }) => {
   const slides = [
     {
       image: '/images/package_rhino_main.jpg',

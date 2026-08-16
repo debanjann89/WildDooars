@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Compass, Plus, Edit2, Trash2, Save, X, Clock, MapPin, Layers } from 'lucide-react';
+import { Plus, Edit2, Trash2, Save, X } from 'lucide-react';
 import { apiService } from '../../services/api';
 import type { Package, ItineraryDay } from '../../types';
 

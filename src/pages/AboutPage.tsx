@@ -1,5 +1,5 @@
 import React from 'react';
-import { Compass, MapPin, Phone, ShieldCheck, Heart, Users, Car, Trees, Award, Star, CheckCircle2, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Heart, Users, Trees, CheckCircle2, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { BusinessSettings } from '../types';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Camera, MapPin, Trees, ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export const WildlifeSection: React.FC = () => {

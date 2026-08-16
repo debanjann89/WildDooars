@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, MapPin, ExternalLink, ThumbsUp } from 'lucide-react';
+import { MapPin, ExternalLink, ThumbsUp } from 'lucide-react';
 import type { BusinessSettings } from '../types';
 
 interface GoogleRatingSectionProps {

@@ -3,10 +3,12 @@ import { PhoneCall, HelpCircle } from 'lucide-react';
 import type { BusinessSettings } from '../types';
 
 interface QuestionsSupportStripProps {
-  settings: BusinessSettings;
+  settings?: BusinessSettings | null;
 }
 
 export const QuestionsSupportStrip: React.FC<QuestionsSupportStripProps> = ({ settings }) => {
+  const phone = settings?.phone || '081164 42729';
+
   return (
     <section className="py-12 bg-[#15803d] text-white border-y border-emerald-700 font-sans">
       <div className="container">
@@ -26,11 +28,11 @@ export const QuestionsSupportStrip: React.FC<QuestionsSupportStripProps> = ({ se
           </div>
 
           <a
-            href={`tel:${settings.phone.replace(/\s+/g, '')}`}
+            href={`tel:${phone.replace(/\s+/g, '')}`}
             className="flex items-center justify-center gap-3 bg-[#0a1f14] text-white px-8 py-3.5 rounded-full font-black text-xl hover:bg-emerald-950 transition-all shadow-lg border-2 border-emerald-400"
           >
             <PhoneCall className="w-6 h-6 text-emerald-400" />
-            <span>{settings.phone}</span>
+            <span>{phone}</span>
           </a>
         </div>
       </div>

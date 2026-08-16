@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trees, AlertTriangle, Send } from 'lucide-react';
+import { AlertTriangle, Send } from 'lucide-react';
 import type { SafariInfo } from '../types';
 
 interface SafariPageProps {
