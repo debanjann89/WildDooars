@@ -29,10 +29,15 @@ export const initialDestinations: Destination[] = [
     mainImage: '/images/dest_jaldapara.jpg',
     gallery: [
       '/images/package_rhino_main.jpg',
+      '/images/jaldapara_gate.jpg',
       '/images/package_rhino_gallery1.jpg',
       '/images/package_rhino_gallery2.jpg',
+      '/images/wildlife_elephant.jpg',
+      '/images/jaldapara_gallery_herd.jpg',
+      '/images/jaldapara_gallery_sambar.jpg',
       '/images/jaldapara_gallery_deer.jpg',
-      '/images/jaldapara_gallery_gaur.jpg'
+      '/images/jaldapara_gallery_gaur.jpg',
+      '/images/jaldapara_gallery_bird.jpg'
     ],
     attractions: [
       'Jaldapara Core Jeep Safari',
@@ -173,10 +178,15 @@ export const initialPackages: Package[] = [
     mainImage: '/images/package_rhino_main.jpg',
     gallery: [
       '/images/package_rhino_main.jpg',
+      '/images/jaldapara_gate.jpg',
       '/images/package_rhino_gallery1.jpg',
       '/images/package_rhino_gallery2.jpg',
+      '/images/wildlife_elephant.jpg',
+      '/images/jaldapara_gallery_herd.jpg',
+      '/images/jaldapara_gallery_sambar.jpg',
       '/images/jaldapara_gallery_deer.jpg',
-      '/images/jaldapara_gallery_gaur.jpg'
+      '/images/jaldapara_gallery_gaur.jpg',
+      '/images/jaldapara_gallery_bird.jpg'
     ],
     highlights: [
       'Jaldapara National Park Jeep Safari & Elephant Safari assistance',

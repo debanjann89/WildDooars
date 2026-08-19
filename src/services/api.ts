@@ -13,7 +13,7 @@ const STORAGE_KEYS = {
   AUTH: 'wd_admin_auth'
 };
 
-const DATA_VERSION_KEY = 'wd_data_version_v5';
+const DATA_VERSION_KEY = 'wd_data_version_v6';
 
 // Force sync localStorage with exact dataset if version changes
 function initializeLocalStorage() {
