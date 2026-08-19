@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MapPin, Phone, Mail, ChevronDown, Menu, X, Compass, Trees } from 'lucide-react';
+import { MapPin, Phone, Mail, ChevronDown, Menu, X, Trees } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { BusinessSettings } from '../types';
 
@@ -81,15 +81,17 @@ export const Header: React.FC<HeaderProps> = ({ settings, onOpenEnquiry }) => {
       >
         <div className="container flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group flex-shrink-0">
-            <div className="w-10 h-10 rounded-xl bg-[#15803d] flex items-center justify-center text-white shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
-              <Compass className="w-5 h-5" />
-            </div>
+          <Link to="/" className="flex items-center gap-3 group flex-shrink-0">
+            <img
+              src="/images/logo.png"
+              alt="Wild Dooars Tours & Travels Logo"
+              className="h-11 sm:h-13 w-auto object-contain group-hover:scale-105 transition-transform"
+            />
             <div className="flex flex-col">
-              <span className="font-extrabold text-lg sm:text-xl text-slate-900 tracking-tight leading-none">
+              <span className="font-black text-lg sm:text-xl text-slate-900 tracking-tight leading-none">
                 WILD DOOARS
               </span>
-              <span className="text-[10px] sm:text-[11px] font-extrabold text-[#15803d] tracking-wider uppercase leading-tight mt-0.5">
+              <span className="text-[10px] sm:text-[11px] font-black text-[#15803d] tracking-wider uppercase leading-tight mt-1">
                 TOURS & TRAVELS
               </span>
             </div>

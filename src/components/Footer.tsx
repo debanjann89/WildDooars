@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, Clock, Lock, Compass } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Lock } from 'lucide-react';
 import type { BusinessSettings } from '../types';
 
 interface FooterProps {
@@ -17,14 +17,16 @@ export const Footer: React.FC<FooterProps> = ({ settings }) => {
           {/* Column 1: Brand & Contact Info */}
           <div>
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-xl bg-[#15803d] flex items-center justify-center text-white shadow-sm flex-shrink-0">
-                <Compass className="w-6 h-6" />
-              </div>
+              <img
+                src="/images/logo.png"
+                alt="Wild Dooars Tours & Travels Logo"
+                className="h-12 w-auto object-contain"
+              />
               <div className="flex flex-col">
                 <span className="font-black text-lg text-white tracking-tight leading-none">
                   WILD DOOARS
                 </span>
-                <span className="text-[10px] font-extrabold text-emerald-400 tracking-wider uppercase leading-tight mt-0.5">
+                <span className="text-[10px] font-extrabold text-emerald-400 tracking-wider uppercase leading-tight mt-1">
                   TOURS & TRAVELS
                 </span>
               </div>

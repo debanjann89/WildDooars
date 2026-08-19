@@ -69,9 +69,11 @@ export const AdminLayout: React.FC = () => {
         <div>
           {/* Admin Header */}
           <div className="hidden md:flex items-center gap-3 px-3 py-4 mb-4 border-b border-emerald-900/60">
-            <div className="w-10 h-10 rounded-xl bg-[#15803d] text-white flex items-center justify-center flex-shrink-0 shadow-sm">
-              <Compass className="w-6 h-6" />
-            </div>
+            <img
+              src="/images/logo.png"
+              alt="Wild Dooars Logo"
+              className="h-10 w-auto object-contain"
+            />
             <div>
               <span className="block font-black text-sm text-white leading-tight">WILD DOOARS</span>
               <span className="block text-[10px] font-extrabold text-emerald-400 uppercase tracking-wider">CMS Dashboard</span>
