@@ -30,7 +30,9 @@ export const initialDestinations: Destination[] = [
     gallery: [
       '/images/package_rhino_main.jpg',
       '/images/package_rhino_gallery1.jpg',
-      '/images/package_rhino_gallery2.jpg'
+      '/images/package_rhino_gallery2.jpg',
+      '/images/jaldapara_gallery_deer.jpg',
+      '/images/jaldapara_gallery_gaur.jpg'
     ],
     attractions: [
       'Jaldapara Core Jeep Safari',
@@ -172,7 +174,9 @@ export const initialPackages: Package[] = [
     gallery: [
       '/images/package_rhino_main.jpg',
       '/images/package_rhino_gallery1.jpg',
-      '/images/package_rhino_gallery2.jpg'
+      '/images/package_rhino_gallery2.jpg',
+      '/images/jaldapara_gallery_deer.jpg',
+      '/images/jaldapara_gallery_gaur.jpg'
     ],
     highlights: [
       'Jaldapara National Park Jeep Safari & Elephant Safari assistance',
