@@ -66,9 +66,9 @@ export const AdminSettings: React.FC = () => {
           <h2 className="text-base font-extrabold text-slate-900 uppercase tracking-tight mb-4 pb-2 border-b border-emerald-100">
             Contact & Location
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <div>
-              <label className="block font-bold text-slate-700 uppercase mb-1">Business Phone *</label>
+              <label className="block font-bold text-slate-700 uppercase mb-1">Primary Phone *</label>
               <input
                 type="text"
                 required
@@ -78,7 +78,17 @@ export const AdminSettings: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block font-bold text-slate-700 uppercase mb-1">WhatsApp Number (digits) *</label>
+              <label className="block font-bold text-slate-700 uppercase mb-1">Alternate Phone</label>
+              <input
+                type="text"
+                placeholder="e.g. 062961 56601"
+                value={settings.alternatePhone || ''}
+                onChange={(e) => setSettings({ ...settings, alternatePhone: e.target.value })}
+                className="w-full p-3 bg-emerald-50/50 border border-emerald-200 rounded-xl text-sm text-slate-900"
+              />
+            </div>
+            <div>
+              <label className="block font-bold text-slate-700 uppercase mb-1">WhatsApp Number *</label>
               <input
                 type="text"
                 required

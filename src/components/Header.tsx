@@ -53,13 +53,20 @@ export const Header: React.FC<HeaderProps> = ({ settings, onOpenEnquiry }) => {
               <MapPin className="w-3.5 h-3.5 text-emerald-200 flex-shrink-0" />
               <span>Lataguri, Jaldapara, West Bengal</span>
             </div>
-            <a
-              href={`tel:${settings.phone.replace(/\s+/g, '')}`}
-              className="flex items-center gap-1.5 font-bold hover:text-emerald-200 transition-colors"
-            >
+            <div className="flex items-center gap-1.5 font-bold">
               <Phone className="w-3.5 h-3.5 text-emerald-200 flex-shrink-0" />
-              <span>{settings.phone}</span>
-            </a>
+              <a href={`tel:${settings.phone.replace(/\s+/g, '')}`} className="hover:text-emerald-200 transition-colors">
+                {settings.phone}
+              </a>
+              {settings.alternatePhone && (
+                <>
+                  <span className="text-emerald-300">/</span>
+                  <a href={`tel:${settings.alternatePhone.replace(/\s+/g, '')}`} className="hover:text-emerald-200 transition-colors">
+                    {settings.alternatePhone}
+                  </a>
+                </>
+              )}
+            </div>
             {settings.email && (
               <a
                 href={`mailto:${settings.email}`}

@@ -83,13 +83,23 @@ export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
                 <span className="text-xs font-extrabold uppercase text-slate-500 tracking-wider block mb-1">
                   Call Us Directly
                 </span>
-                <a
-                  href={`tel:${phoneNum.replace(/\s+/g, '')}`}
-                  className="text-xl font-extrabold text-slate-900 hover:text-[#15803d] block mb-1"
-                >
-                  {phoneNum}
-                </a>
-                <span className="text-xs text-slate-500">Available daily for calls & travel assistance</span>
+                <div className="space-y-1">
+                  <a
+                    href={`tel:${phoneNum.replace(/\s+/g, '')}`}
+                    className="text-lg font-extrabold text-slate-900 hover:text-[#15803d] block"
+                  >
+                    {phoneNum}
+                  </a>
+                  {settings?.alternatePhone && (
+                    <a
+                      href={`tel:${settings.alternatePhone.replace(/\s+/g, '')}`}
+                      className="text-lg font-extrabold text-[#15803d] hover:text-[#166534] block"
+                    >
+                      {settings.alternatePhone} <span className="text-xs font-bold text-slate-500">(Alt)</span>
+                    </a>
+                  )}
+                </div>
+                <span className="text-xs text-slate-500 mt-1 block">Available daily for calls & travel assistance</span>
               </div>
             </div>
 

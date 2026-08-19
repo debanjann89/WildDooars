@@ -43,9 +43,19 @@ export const Footer: React.FC<FooterProps> = ({ settings }) => {
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <a href={`tel:${settings.phone.replace(/\s+/g, '')}`} className="font-extrabold text-white hover:text-emerald-400 transition-colors">
-                  {settings.phone}
-                </a>
+                <div className="flex flex-wrap items-center gap-1.5 font-extrabold text-white">
+                  <a href={`tel:${settings.phone.replace(/\s+/g, '')}`} className="hover:text-emerald-400 transition-colors">
+                    {settings.phone}
+                  </a>
+                  {settings.alternatePhone && (
+                    <>
+                      <span className="text-emerald-500">/</span>
+                      <a href={`tel:${settings.alternatePhone.replace(/\s+/g, '')}`} className="hover:text-emerald-400 transition-colors">
+                        {settings.alternatePhone}
+                      </a>
+                    </>
+                  )}
+                </div>
               </li>
               {settings.email && (
                 <li className="flex items-center gap-3">

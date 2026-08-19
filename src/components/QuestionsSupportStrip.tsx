@@ -27,13 +27,24 @@ export const QuestionsSupportStrip: React.FC<QuestionsSupportStripProps> = ({ se
             </div>
           </div>
 
-          <a
-            href={`tel:${phone.replace(/\s+/g, '')}`}
-            className="flex items-center justify-center gap-3 bg-[#0a1f14] text-white px-8 py-3.5 rounded-full font-black text-xl hover:bg-emerald-950 transition-all shadow-lg border-2 border-emerald-400"
-          >
-            <PhoneCall className="w-6 h-6 text-emerald-400" />
-            <span>{phone}</span>
-          </a>
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            <a
+              href={`tel:${phone.replace(/\s+/g, '')}`}
+              className="flex items-center justify-center gap-2.5 bg-[#0a1f14] text-white px-6 py-3.5 rounded-full font-black text-lg hover:bg-emerald-950 transition-all shadow-lg border-2 border-emerald-400"
+            >
+              <PhoneCall className="w-5 h-5 text-emerald-400" />
+              <span>{phone}</span>
+            </a>
+            {settings?.alternatePhone && (
+              <a
+                href={`tel:${settings.alternatePhone.replace(/\s+/g, '')}`}
+                className="flex items-center justify-center gap-2.5 bg-emerald-900/80 text-white px-6 py-3.5 rounded-full font-black text-lg hover:bg-emerald-950 transition-all shadow-lg border border-emerald-300"
+              >
+                <PhoneCall className="w-5 h-5 text-emerald-300" />
+                <span>{settings.alternatePhone}</span>
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </section>

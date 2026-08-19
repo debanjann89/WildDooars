@@ -101,6 +101,7 @@ export interface BusinessSettings {
   businessName: string;
   bengaliName: string;
   phone: string;
+  alternatePhone?: string;
   whatsapp: string;
   email: string;
   address: string;
