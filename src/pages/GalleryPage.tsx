@@ -50,9 +50,9 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onOpenEnquiry }) => {
   const activePhoto: GalleryPhoto | null = activePhotoIndex !== null ? filteredPhotos[activePhotoIndex] : null;
 
   return (
-    <div className="min-h-screen bg-white font-sans py-12 sm:py-16">
-      <div className="container max-w-7xl mx-auto px-4 sm:px-6">
-        {/* Section Header */}
+    <div className="min-h-screen bg-white font-sans py-10 sm:py-14">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Clean Section Header */}
         <div className="sec-title centered max-w-2xl mx-auto mb-8 text-center">
           <span className="section-tag">Visuals</span>
           <h2>
@@ -92,41 +92,31 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onOpenEnquiry }) => {
           })}
         </div>
 
-        {/* Clean, Clutter-Free Photo Grid */}
-        <motion.div 
-          layout
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5"
-        >
-          <AnimatePresence>
-            {filteredPhotos.map((photo, idx) => (
-              <motion.div
-                key={photo.id}
-                layout
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => setActivePhotoIndex(idx)}
-                className="group relative aspect-[4/3] rounded-2xl overflow-hidden bg-slate-100 cursor-pointer shadow-xs hover:shadow-lg transition-all duration-300"
-              >
-                <img
-                  src={photo.src}
-                  alt={photo.alt}
-                  fetchPriority={idx < 2 ? 'high' : undefined}
-                  loading={idx < 2 ? undefined : 'lazy'}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                />
+        {/* Pure, Uncropped Masonry Photo Grid */}
+        <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+          {filteredPhotos.map((photo, idx) => (
+            <div
+              key={photo.id}
+              onClick={() => setActivePhotoIndex(idx)}
+              className="break-inside-avoid group relative rounded-2xl overflow-hidden bg-slate-100 cursor-pointer shadow-xs hover:shadow-xl transition-all duration-300"
+            >
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                fetchPriority={idx < 2 ? 'high' : undefined}
+                loading={idx < 2 ? undefined : 'lazy'}
+                className="w-full h-auto object-cover group-hover:scale-104 transition-transform duration-500 ease-out block"
+              />
 
-                {/* Subtle Hover Overlay with Zoom Icon */}
-                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                  <div className="w-10 h-10 rounded-full bg-white/90 text-slate-900 flex items-center justify-center shadow-md transform scale-90 group-hover:scale-100 transition-transform">
-                    <Maximize2 className="w-4 h-4 text-[#15803d]" />
-                  </div>
+              {/* Subtle Clean Hover Overlay with Zoom Icon */}
+              <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center pointer-events-none">
+                <div className="w-10 h-10 rounded-full bg-white/95 text-slate-900 flex items-center justify-center shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
+                  <Maximize2 className="w-4 h-4 text-[#15803d]" />
                 </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+              </div>
+            </div>
+          ))}
+        </div>
 
         {/* Clean Footer Booking CTA */}
         <div className="mt-16 text-center pt-8 border-t border-slate-100">
@@ -150,12 +140,12 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onOpenEnquiry }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="fixed inset-0 z-50 bg-black/90 flex flex-col justify-between p-4 sm:p-8"
+            className="fixed inset-0 z-50 bg-black/92 backdrop-blur-xs flex flex-col justify-between p-4 sm:p-6"
             onClick={() => setActivePhotoIndex(null)}
           >
             {/* Top Bar: Counter & Close Button */}
             <div 
-              className="flex items-center justify-between text-white max-w-5xl mx-auto w-full"
+              className="flex items-center justify-between text-white max-w-6xl mx-auto w-full"
               onClick={(e) => e.stopPropagation()}
             >
               <span className="text-xs font-semibold text-slate-300">
@@ -173,14 +163,14 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onOpenEnquiry }) => {
 
             {/* Photo Preview with Minimal Prev/Next Controls */}
             <div 
-              className="relative flex items-center justify-center flex-grow py-4 max-w-5xl mx-auto w-full"
+              className="relative flex items-center justify-center flex-grow py-2 max-w-6xl mx-auto w-full"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Prev Button */}
               <button
                 type="button"
                 onClick={() => setActivePhotoIndex(prev => (prev !== null && prev > 0 ? prev - 1 : filteredPhotos.length - 1))}
-                className="absolute left-0 sm:left-2 p-3 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
+                className="absolute left-0 sm:left-2 p-3 rounded-full text-white/75 hover:text-white hover:bg-white/15 transition-all cursor-pointer z-10"
                 aria-label="Previous"
               >
                 <ChevronLeft className="w-8 h-8" />
@@ -195,22 +185,27 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onOpenEnquiry }) => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.15 }}
-                className="max-h-[82vh] max-w-[92vw] object-contain rounded-lg shadow-2xl"
+                className="max-h-[84vh] max-w-[92vw] object-contain rounded-xl shadow-2xl"
               />
 
               {/* Next Button */}
               <button
                 type="button"
                 onClick={() => setActivePhotoIndex(prev => (prev !== null && prev < filteredPhotos.length - 1 ? prev + 1 : 0))}
-                className="absolute right-0 sm:right-2 p-3 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
+                className="absolute right-0 sm:right-2 p-3 rounded-full text-white/75 hover:text-white hover:bg-white/15 transition-all cursor-pointer z-10"
                 aria-label="Next"
               >
                 <ChevronRight className="w-8 h-8" />
               </button>
             </div>
 
-            {/* Empty space at bottom to maintain vertical balance */}
-            <div className="h-6" />
+            {/* Bottom Caption & Alt Name */}
+            <div 
+              className="text-center text-xs text-slate-300 py-1"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span>{activePhoto.alt}</span>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

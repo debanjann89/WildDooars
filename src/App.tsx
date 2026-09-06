@@ -5,6 +5,7 @@ import { MobileActionBar } from './components/MobileActionBar';
 import { FloatingActionButtons } from './components/FloatingActionButtons';
 import { Footer } from './components/Footer';
 import { EnquiryModal } from './components/EnquiryModal';
+import { Preloader } from './components/Preloader';
 
 import { HomePage } from './pages/HomePage';
 import { PackagesPage } from './pages/PackagesPage';
@@ -71,21 +72,31 @@ export const AppContent: React.FC = () => {
     hotelPreference?: string;
   } | undefined>(undefined);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     async function loadSiteData() {
-      const s = await apiService.getSettings();
-      const p = await apiService.getPackages();
-      const d = await apiService.getDestinations();
-      const v = await apiService.getVehicles();
-      const h = await apiService.getHotels();
-      const sf = await apiService.getSafaris();
+      try {
+        const [s, p, d, v, h, sf] = await Promise.all([
+          apiService.getSettings(),
+          apiService.getPackages(),
+          apiService.getDestinations(),
+          apiService.getVehicles(),
+          apiService.getHotels(),
+          apiService.getSafaris()
+        ]);
 
-      setSettings(s);
-      setPackages(p);
-      setDestinations(d);
-      setVehicles(v);
-      setHotels(h);
-      setSafaris(sf);
+        setSettings(s);
+        setPackages(p);
+        setDestinations(d);
+        setVehicles(v);
+        setHotels(h);
+        setSafaris(sf);
+      } catch (err) {
+        console.error('Failed to load initial site data', err);
+      } finally {
+        setTimeout(() => setIsLoading(false), 500);
+      }
     }
     loadSiteData();
   }, [location.pathname]);
@@ -102,18 +113,12 @@ export const AppContent: React.FC = () => {
   };
 
   if (!settings) {
-    return (
-      <div className="min-h-screen bg-stone-900 flex items-center justify-center text-white">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-amber-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-sm font-semibold tracking-wider uppercase text-amber-300">Loading Wild Dooars...</p>
-        </div>
-      </div>
-    );
+    return <Preloader isLoading={true} />;
   }
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#0a1f14] text-slate-900 font-sans">
+      <Preloader isLoading={isLoading} />
       <ScrollToTop />
 
       {/* Public Header (Hidden in Admin) */}

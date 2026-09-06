@@ -86,26 +86,26 @@ export const Header: React.FC<HeaderProps> = ({ settings, onOpenEnquiry }) => {
           isScrolled ? 'fixed top-0 left-0 right-0 py-2.5 shadow-md' : 'relative py-3.5'
         }`}
       >
-        <div className="container flex items-center justify-between">
+        <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 xl:px-8 flex items-center justify-between gap-4">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group flex-shrink-0">
             <img
               src="/images/logo.png"
               alt="Wild Dooars Tours & Travels Logo"
-              className="h-11 sm:h-13 w-auto object-contain group-hover:scale-105 transition-transform"
+              className="h-10 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform"
             />
             <div className="flex flex-col">
-              <span className="font-black text-lg sm:text-xl text-slate-900 tracking-tight leading-none">
+              <span className="font-black text-base sm:text-lg xl:text-xl text-slate-900 tracking-tight leading-none">
                 WILD DOOARS
               </span>
-              <span className="text-[10px] sm:text-[11px] font-black text-[#15803d] tracking-wider uppercase leading-tight mt-1">
+              <span className="text-[9px] sm:text-[10px] xl:text-[11px] font-black text-[#15803d] tracking-wider uppercase leading-tight mt-1">
                 TOURS & TRAVELS
               </span>
             </div>
           </Link>
 
           {/* Navigation Items (Desktop) */}
-          <nav className="hidden lg:flex items-center gap-7 text-xs uppercase font-extrabold tracking-wider text-slate-800">
+          <nav className="hidden xl:flex items-center gap-4 2xl:gap-6 text-xs uppercase font-extrabold tracking-wide text-slate-800 whitespace-nowrap flex-shrink-0">
             <Link
               to="/"
               className={`hover:text-[#15803d] transition-colors py-2 ${
@@ -228,17 +228,17 @@ export const Header: React.FC<HeaderProps> = ({ settings, onOpenEnquiry }) => {
           </nav>
 
           {/* Bookings Button (Desktop Only) */}
-          <div className="hidden lg:block flex-shrink-0">
+          <div className="hidden xl:block flex-shrink-0">
             <button
               onClick={() => onOpenEnquiry()}
-              className="btn-style-one text-xs uppercase py-2.5 px-6 shadow-md"
+              className="btn-style-one text-xs uppercase py-2.5 px-5 shadow-md whitespace-nowrap"
             >
               Bookings
             </button>
           </div>
 
           {/* Mobile Menu Toggle */}
-          <div className="flex lg:hidden items-center gap-1 flex-shrink-0">
+          <div className="flex xl:hidden items-center gap-1 flex-shrink-0">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2.5 text-slate-800 hover:text-[#15803d] active:scale-95 transition-all"
@@ -256,7 +256,7 @@ export const Header: React.FC<HeaderProps> = ({ settings, onOpenEnquiry }) => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-[#15803d] text-white border-t border-emerald-700 py-4 px-6 shadow-2xl overflow-hidden"
+              className="xl:hidden bg-[#15803d] text-white border-t border-emerald-700 py-4 px-6 shadow-2xl overflow-hidden"
             >
               <nav className="flex flex-col gap-3 font-bold uppercase text-xs tracking-wider">
                 <Link to="/" className="py-2 border-b border-emerald-700 hover:text-emerald-200">Home</Link>
