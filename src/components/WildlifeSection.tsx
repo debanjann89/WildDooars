@@ -28,7 +28,7 @@ export const WildlifeSection: React.FC = () => {
       scientific: 'Bos gaurus',
       park: 'Gorumara & Jaldapara',
       category: 'Mammals' as const,
-      image: '/images/wildlife/wildlife_gaur.jpg?v=species_v3',
+      image: '/images/wildlife/wildlife_gaur.jpg?v=species_v5',
       desc: 'Massive herbivore with distinctive white stockinged legs often seen near riverbanks and salt licks.'
     },
     {
@@ -36,7 +36,7 @@ export const WildlifeSection: React.FC = () => {
       scientific: 'Rusa unicolor',
       park: 'Across All Dooars Forests',
       category: 'Mammals' as const,
-      image: '/images/wildlife/wildlife_deer.jpg?v=species_v3',
+      image: '/images/wildlife/wildlife_deer.jpg?v=species_v5',
       desc: 'Graceful forest deer that echo warning calls across the canopy when predators approach.'
     },
     {
