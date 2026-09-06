@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Sparkles, Bug, Bird, Footprints, Layers } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ShieldCheck, Sparkles, Bug, Bird, Footprints, Layers, Camera, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const WildlifeSection: React.FC = () => {
@@ -186,6 +187,18 @@ export const WildlifeSection: React.FC = () => {
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {/* View Full Gallery CTA Button */}
+        <div className="mt-12 text-center">
+          <Link
+            to="/gallery"
+            className="inline-flex items-center gap-2.5 bg-[#15803d] hover:bg-emerald-800 text-white font-extrabold uppercase text-xs sm:text-sm tracking-wider px-8 py-3.5 rounded-full shadow-lg shadow-emerald-700/20 hover:scale-105 active:scale-95 transition-all"
+          >
+            <Camera className="w-4 h-4 text-amber-300" />
+            <span>Explore Full Wild Dooars Photo Gallery (18+ Photos)</span>
+            <ChevronRight className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
     </section>
   );

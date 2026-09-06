@@ -209,6 +209,15 @@ export const Header: React.FC<HeaderProps> = ({ settings, onOpenEnquiry }) => {
             </Link>
 
             <Link
+              to="/gallery"
+              className={`hover:text-[#15803d] transition-colors py-2 ${
+                isActive('/gallery') ? 'text-[#15803d] font-black border-b-2 border-[#15803d]' : ''
+              }`}
+            >
+              Gallery
+            </Link>
+
+            <Link
               to="/contact"
               className={`hover:text-[#15803d] transition-colors py-2 ${
                 isActive('/contact') ? 'text-[#15803d] font-black border-b-2 border-[#15803d]' : ''
@@ -258,8 +267,9 @@ export const Header: React.FC<HeaderProps> = ({ settings, onOpenEnquiry }) => {
                 <Link to="/packages?category=Dooars" className="py-2 border-b border-emerald-700 hover:text-emerald-200">Dooars Wildlife Packages</Link>
                 <Link to="/packages" className="py-2 border-b border-emerald-700 hover:text-emerald-200">All Packages</Link>
                 <Link to="/safari" className="py-2 border-b border-emerald-700 hover:text-emerald-200">Jungle Safaris</Link>
-                <Link to="/hotels" className="py-2 border-b border-emerald-700 hover:text-emerald-200">Hotels</Link>
-                <Link to="/contact" className="py-2 border-b border-emerald-700 hover:text-emerald-200">Contact</Link>
+                <Link to="/hotels" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b border-emerald-700 hover:text-emerald-200">Hotels</Link>
+                <Link to="/gallery" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b border-emerald-700 hover:text-emerald-200">Gallery</Link>
+                <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="py-2 border-b border-emerald-700 hover:text-emerald-200">Contact</Link>
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);

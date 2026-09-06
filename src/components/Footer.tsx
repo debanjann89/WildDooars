@@ -100,6 +100,9 @@ export const Footer: React.FC<FooterProps> = ({ settings }) => {
                 <Link to="/hotels" className="hover:text-emerald-400 transition-colors">Hotels</Link>
               </li>
               <li>
+                <Link to="/gallery" className="hover:text-emerald-400 transition-colors">Photo Gallery</Link>
+              </li>
+              <li>
                 <Link to="/contact" className="hover:text-emerald-400 transition-colors">Contact Us</Link>
               </li>
             </ul>

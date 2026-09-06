@@ -16,6 +16,7 @@ import { CarRentalPage } from './pages/CarRentalPage';
 import { HotelsPage } from './pages/HotelsPage';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
+import { GalleryPage } from './pages/GalleryPage';
 
 import { AdminLogin } from './pages/admin/AdminLogin';
 import { AdminLayout } from './pages/admin/AdminLayout';
@@ -171,6 +172,10 @@ export const AppContent: React.FC = () => {
           <Route
             path="/contact"
             element={<ContactPage settings={settings} />}
+          />
+          <Route
+            path="/gallery"
+            element={<GalleryPage onOpenEnquiry={handleOpenEnquiry} />}
           />
 
           {/* Admin Routes */}
