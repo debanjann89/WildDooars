@@ -86,26 +86,26 @@ export const Header: React.FC<HeaderProps> = ({ settings, onOpenEnquiry }) => {
           isScrolled ? 'fixed top-0 left-0 right-0 py-2.5 shadow-md' : 'relative py-3.5'
         }`}
       >
-        <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 xl:px-8 flex items-center justify-between gap-4">
+        <div className="container flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group flex-shrink-0">
+          <Link to="/" className="flex items-center gap-2.5 group flex-shrink-0">
             <img
               src="/images/logo.png"
               alt="Wild Dooars Tours & Travels Logo"
-              className="h-10 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform"
+              className="h-10 sm:h-11 w-auto object-contain group-hover:scale-105 transition-transform"
             />
             <div className="flex flex-col">
-              <span className="font-black text-base sm:text-lg xl:text-xl text-slate-900 tracking-tight leading-none">
+              <span className="font-black text-base sm:text-lg text-slate-900 tracking-tight leading-none">
                 WILD DOOARS
               </span>
-              <span className="text-[9px] sm:text-[10px] xl:text-[11px] font-black text-[#15803d] tracking-wider uppercase leading-tight mt-1">
+              <span className="text-[9px] sm:text-[10px] font-black text-[#15803d] tracking-wider uppercase leading-tight mt-0.5">
                 TOURS & TRAVELS
               </span>
             </div>
           </Link>
 
           {/* Navigation Items (Desktop) */}
-          <nav className="hidden xl:flex items-center gap-4 2xl:gap-6 text-xs uppercase font-extrabold tracking-wide text-slate-800 whitespace-nowrap flex-shrink-0">
+          <nav className="hidden xl:flex items-center gap-3.5 2xl:gap-5 text-[11px] 2xl:text-xs uppercase font-extrabold tracking-tight 2xl:tracking-wide text-slate-800 whitespace-nowrap flex-shrink-0">
             <Link
               to="/"
               className={`hover:text-[#15803d] transition-colors py-2 ${
