@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Sparkles, Bug, Bird, Footprints, Layers, Camera, ChevronRight } from 'lucide-react';
+import { ShieldCheck, Bug, Bird, Footprints, Layers } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const WildlifeSection: React.FC = () => {
@@ -157,10 +157,6 @@ export const WildlifeSection: React.FC = () => {
                     <div className="absolute top-3 left-3 bg-[#15803d] text-white px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider shadow-md">
                       {animal.park}
                     </div>
-                    <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-xs text-emerald-300 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide flex items-center gap-1">
-                      <Sparkles className="w-3 h-3 text-amber-400" />
-                      <span>{animal.category}</span>
-                    </div>
                   </div>
 
                   {/* Content */}
@@ -192,11 +188,9 @@ export const WildlifeSection: React.FC = () => {
         <div className="mt-12 text-center">
           <Link
             to="/gallery"
-            className="inline-flex items-center gap-2.5 bg-[#15803d] hover:bg-emerald-800 text-white font-extrabold uppercase text-xs sm:text-sm tracking-wider px-8 py-3.5 rounded-full shadow-lg shadow-emerald-700/20 hover:scale-105 active:scale-95 transition-all"
+            className="btn-style-one text-xs uppercase py-3 px-8 shadow-md"
           >
-            <Camera className="w-4 h-4 text-amber-300" />
-            <span>Explore Full Wild Dooars Photo Gallery (18+ Photos)</span>
-            <ChevronRight className="w-4 h-4" />
+            View Photo Gallery
           </Link>
         </div>
       </div>

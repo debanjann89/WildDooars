@@ -1,200 +1,124 @@
-export interface GalleryItem {
+export interface GalleryPhoto {
   id: string;
-  title: string;
-  description: string;
   src: string;
-  category: 'wildlife' | 'safaris' | 'landscapes';
-  location: string;
-  tag: string;
-  aspect: 'landscape' | 'portrait' | 'square';
+  alt: string;
+  category: 'forest' | 'animals' | 'safaris';
 }
 
 export const galleryCategories = [
   { id: 'all', label: 'All Photos' },
-  { id: 'wildlife', label: 'Wildlife & Fauna' },
+  { id: 'forest', label: 'Forest & Landscapes' },
+  { id: 'animals', label: 'Wild Animals' },
   { id: 'safaris', label: 'Jungle Safaris' },
-  { id: 'landscapes', label: 'Rivers & Landscapes' },
 ] as const;
 
-export const galleryItems: GalleryItem[] = [
+export const galleryPhotos: GalleryPhoto[] = [
   {
-    id: 'gal-01',
-    title: 'Jayanti Riverbed & Bhutan Foothills',
-    description: 'Pristine white riverbed expanse against dramatic cloud-covered Himalayan peaks.',
+    id: '1',
     src: '/images/gallery/gallery_01.jpg',
-    category: 'landscapes',
-    location: 'Jayanti, Buxa Tiger Reserve',
-    tag: 'Mountain Landscape',
-    aspect: 'landscape'
+    alt: 'Jayanti Riverbed and Bhutan Hills',
+    category: 'forest'
   },
   {
-    id: 'gal-02',
-    title: 'Jayanti Riverbed Exploration',
-    description: 'Hikers traversing the vast pebbled dry river valley under mountain shadows.',
+    id: '2',
     src: '/images/gallery/gallery_02.jpg',
-    category: 'landscapes',
-    location: 'Jayanti, Indo-Bhutan Border',
-    tag: 'River Treks',
-    aspect: 'landscape'
+    alt: 'Jayanti River Trail',
+    category: 'forest'
   },
   {
-    id: 'gal-03',
-    title: 'Jayanti River Pebbles & Horizons',
-    description: 'Crystal-clear mountain stones and white river silt stretching across the border valley.',
+    id: '3',
     src: '/images/gallery/gallery_03.jpg',
-    category: 'landscapes',
-    location: 'Buxa Tiger Reserve',
-    tag: 'Valley Panorama',
-    aspect: 'landscape'
+    alt: 'Mountain Riverbed Stones',
+    category: 'forest'
   },
   {
-    id: 'gal-04',
-    title: 'Indian Bison (Gaur) in Deep Forest',
-    description: 'Enormous male Indian Bison foraging along the dense sal forest border.',
+    id: '4',
     src: '/images/gallery/gallery_04.jpg',
-    category: 'wildlife',
-    location: 'Jaldapara & Gorumara',
-    tag: 'Protected Fauna',
-    aspect: 'landscape'
+    alt: 'Indian Bison (Gaur)',
+    category: 'animals'
   },
   {
-    id: 'gal-05',
-    title: 'One-Horned Rhinoceros in Lush Ferns',
-    description: 'The iconic Indian One-Horned Rhino grazing amidst vibrant emerald fern grasslands.',
+    id: '5',
     src: '/images/gallery/gallery_05.jpg',
-    category: 'wildlife',
-    location: 'Jaldapara National Park',
-    tag: 'Star Attraction',
-    aspect: 'landscape'
+    alt: 'One-Horned Rhinoceros',
+    category: 'animals'
   },
   {
-    id: 'gal-06',
-    title: 'Asian Elephant Herd Crossing Forest Path',
-    description: 'Wild elephant family peacefully crossing a jungle safari trail during morning patrol.',
+    id: '6',
     src: '/images/gallery/gallery_06.jpg',
-    category: 'wildlife',
-    location: 'Jaldapara Forest Corridor',
-    tag: 'Wild Herd',
-    aspect: 'landscape'
+    alt: 'Asian Elephant Herd',
+    category: 'animals'
   },
   {
-    id: 'gal-07',
-    title: 'Elephant Safari Forest Expedition',
-    description: 'Tourists enjoying a guided elephant-back safari exploring deep into the Dooars woodland.',
+    id: '7',
     src: '/images/gallery/gallery_07.jpg',
-    category: 'safaris',
-    location: 'Hollong, Jaldapara',
-    tag: 'Elephant Ride',
-    aspect: 'portrait'
+    alt: 'Elephant Safari in Dooars',
+    category: 'safaris'
   },
   {
-    id: 'gal-08',
-    title: 'Wild Tusker Asian Elephant',
-    description: 'A magnificent wild bull tusker emerging with quiet authority through dense vegetation.',
+    id: '8',
     src: '/images/gallery/gallery_08.jpg',
-    category: 'wildlife',
-    location: 'Buxa Forest Corridor',
-    tag: 'Wild Bull Tusker',
-    aspect: 'portrait'
+    alt: 'Wild Tusker Elephant',
+    category: 'animals'
   },
   {
-    id: 'gal-09',
-    title: 'Indian Leopard on Forest Canopy',
-    description: 'Graceful Indian Leopard resting alertly along a mossy forest branch in the canopy.',
+    id: '9',
     src: '/images/gallery/gallery_09.jpg',
-    category: 'wildlife',
-    location: 'Dooars Forest Canopy',
-    tag: 'Apex Predator',
-    aspect: 'landscape'
+    alt: 'Indian Leopard',
+    category: 'animals'
   },
   {
-    id: 'gal-10',
-    title: 'Open 4x4 Jungle Jeep Safari',
-    description: 'Excited travelers spotting wildlife from an open gypsy safari vehicle at golden hour.',
+    id: '10',
     src: '/images/gallery/gallery_10.jpg',
-    category: 'safaris',
-    location: 'Jaldapara Safari Zone',
-    tag: 'Jeep Safari',
-    aspect: 'portrait'
+    alt: 'Jungle Jeep Safari',
+    category: 'safaris'
   },
   {
-    id: 'gal-11',
-    title: 'Indian Gaur Bull Pair',
-    description: 'A pair of majestic gaurs with signature curved horns and distinctive white stockings.',
+    id: '11',
     src: '/images/gallery/gallery_11.jpg',
-    category: 'wildlife',
-    location: 'Gorumara National Park',
-    tag: 'Indian Bison',
-    aspect: 'landscape'
+    alt: 'Indian Gaur Bull',
+    category: 'animals'
   },
   {
-    id: 'gal-12',
-    title: 'River Meanders Through Rainforest Canopy',
-    description: 'Spectacular aerial view of emerald rivers cutting through pristine subtropical jungle.',
+    id: '12',
     src: '/images/gallery/gallery_12.jpg',
-    category: 'landscapes',
-    location: 'Dooars Riverine Ecosystem',
-    tag: 'Aerial Panorama',
-    aspect: 'landscape'
+    alt: 'Aerial Forest Canopy and River',
+    category: 'forest'
   },
   {
-    id: 'gal-13',
-    title: 'Morning Elephant Safari Sunbeams',
-    description: 'Golden sun rays piercing through misty trees as an elephant safari glides across the grasslands.',
+    id: '13',
     src: '/images/gallery/gallery_13.jpg',
-    category: 'safaris',
-    location: 'Jaldapara Grasslands',
-    tag: 'Misty Dawn Safari',
-    aspect: 'landscape'
+    alt: 'Morning Elephant Safari',
+    category: 'safaris'
   },
   {
-    id: 'gal-14',
-    title: 'Barking Deer (Muntjac) in Meadow',
-    description: 'Alert golden-coated Barking Deer standing poised in sunlit forest meadow.',
+    id: '14',
     src: '/images/gallery/gallery_14.jpg',
-    category: 'wildlife',
-    location: 'Chapramari Sanctuary',
-    tag: 'Forest Herbivore',
-    aspect: 'landscape'
+    alt: 'Barking Deer',
+    category: 'animals'
   },
   {
-    id: 'gal-15',
-    title: 'Sambar Stag with Royal Antlers',
-    description: 'Regal male Sambar deer sporting impressive branched antlers in a forest clearing.',
+    id: '15',
     src: '/images/gallery/gallery_15.jpg',
-    category: 'wildlife',
-    location: 'Buxa Tiger Reserve',
-    tag: 'Sambar Deer',
-    aspect: 'landscape'
+    alt: 'Sambar Deer Stag',
+    category: 'animals'
   },
   {
-    id: 'gal-16',
-    title: 'Forest Sambar Deer Lookout',
-    description: 'Poised sambar deer looking back across a lush green hill meadow in tranquil solitude.',
+    id: '16',
     src: '/images/gallery/gallery_16.jpg',
-    category: 'wildlife',
-    location: 'Jaldapara National Park',
-    tag: 'Hill Meadow',
-    aspect: 'landscape'
+    alt: 'Sambar Deer in Meadow',
+    category: 'animals'
   },
   {
-    id: 'gal-17',
-    title: 'Rhino Mother & Baby Calf',
-    description: 'Mother One-Horned Rhino guiding her young calf along the tranquil river grassland.',
+    id: '17',
     src: '/images/gallery/gallery_17.jpg',
-    category: 'wildlife',
-    location: 'Torsa Riverbanks, Jaldapara',
-    tag: 'Mother & Calf',
-    aspect: 'landscape'
+    alt: 'Rhino Mother and Calf',
+    category: 'animals'
   },
   {
-    id: 'gal-18',
-    title: 'Indian Peacock & Avian Life',
-    description: 'Splendid Indian Peacock displaying vivid tail plumage and crown in forest garden.',
+    id: '18',
     src: '/images/gallery/gallery_18.jpg',
-    category: 'wildlife',
-    location: 'Jaldapara & Chapramari',
-    tag: 'Avian Species',
-    aspect: 'square'
+    alt: 'Indian Peacock',
+    category: 'animals'
   }
 ];
