@@ -66,12 +66,15 @@ export interface Vehicle {
 export interface Hotel {
   id: string;
   name: string;
-  propertyType: 'Hotel' | 'Resort' | 'Homestay';
+  propertyType: 'Hotel' | 'Resort' | 'Homestay' | 'Cottage' | 'Suite' | 'Deluxe Room' | 'Executive Room' | 'Resort Grounds' | string;
   location: string;
   description: string;
   amenities: string[];
   image: string;
   gallery?: string[];
+  capacity?: string;
+  bedType?: string;
+  badge?: string;
   isPublished?: boolean;
 }
 
