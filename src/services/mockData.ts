@@ -162,10 +162,127 @@ export const initialDestinations: Destination[] = [
     ],
     isFeatured: true,
     isPublished: true
+  },
+  {
+    id: 'dest-samsing-jhalong-bindu',
+    name: 'Samsing, Jhalong & Bindu',
+    slug: 'samsing-jhalong-bindu',
+    intro: 'Picturesque foothill villages, hanging suspension bridge, crystal streams, and Indo-Bhutan border dam.',
+    description: 'Tucked into the Neora Valley sub-Himalayan foothills along the Kalimpong-Jalpaiguri border, this enchanting circuit features the orange streams of Suntalekhola, the boulder-strewn waters of Rocky Island on Murti River, the deep Jaldhaka river gorge at Jhalong, and the frontier border outpost at Bindu Dam facing the mountains of Bhutan.',
+    mainImage: '/images/jhalong/jhalong_bindu_dam_main.jpg',
+    gallery: [
+      '/images/jhalong/jhalong_bindu_dam_main.jpg',
+      '/images/jhalong/suntalekhola_hanging_bridge.jpg',
+      '/images/jhalong/samsing_viewpoint_sign.jpg',
+      '/images/jhalong/rocky_island_natural_pool.jpg',
+      '/images/jhalong/jhalong_arch_bridge.jpg',
+      '/images/jhalong/bindu_dam_barrage_wide.jpg',
+      '/images/jhalong/jaldhaka_river_rapid_gorge.jpg'
+    ],
+    attractions: [
+      'Bindu Indo-Bhutan Dam & Jaldhaka Barrage',
+      'Suntalekhola Hanging Wooden Suspension Bridge',
+      'Rocky Island Natural Boulders & River Murti',
+      'Jhalong Curved Arch Bridge & Jaldhaka Gorge',
+      '"I Love Samsing" Viewpoint & Tea Estates',
+      'Cardamom (Elaichi) Curing Hamlets'
+    ],
+    activities: [
+      'Riverbed Relaxation & Dipping',
+      'Himalayan Birdwatching',
+      'Suspension Bridge Walking',
+      'Border Viewpoint Photography',
+      'Tea Garden Driving'
+    ],
+    isFeatured: true,
+    isPublished: true
   }
 ];
 
 export const initialPackages: Package[] = [
+  {
+    id: 'pkg-samsing-jhalong-bindu',
+    name: 'Samsing, Jhalong & Bindu Mountain & River Tour',
+    slug: 'samsing-jhalong-bindu',
+    destination: 'Samsing, Jhalong, Bindu, Suntalekhola & Rocky Island',
+    category: 'Package Tours',
+    duration: '3 Days / 2 Nights',
+    shortDescription: 'Explore the scenic foothill circuit of Dooars: Suntalekhola suspension bridge, Rocky Island natural rock pools, Jhalong river gorge, and the Indo-Bhutan border dam at Bindu.',
+    fullDescription: 'The Samsing-Jhalong-Bindu circuit is the crown jewel of Western Dooars hill and river tourism. Traveling along gentle hill curves fringed by emerald tea gardens and Neora Valley sub-Himalayan ridges, this tour takes you to the famous "I Love Samsing" viewpoint, the vibrant orange streams and wooden hanging suspension bridge of Suntalekhola, the giant river boulders of Rocky Island on the Murti River, the rushing turquoise waters of Jaldhaka River at Jhalong, and the frontier village of Bindu with its historic Indo-Bhutan hydroelectric dam.',
+    mainImage: '/images/jhalong/jhalong_bindu_dam_main.jpg',
+    gallery: [
+      '/images/jhalong/jhalong_bindu_dam_main.jpg',
+      '/images/jhalong/samsing_viewpoint_sign.jpg',
+      '/images/jhalong/suntalekhola_hanging_bridge.jpg',
+      '/images/jhalong/rocky_island_natural_pool.jpg',
+      '/images/jhalong/rocky_island_stream_cascade.jpg',
+      '/images/jhalong/jhalong_arch_bridge.jpg',
+      '/images/jhalong/bindu_dam_barrage_wide.jpg',
+      '/images/jhalong/jaldhaka_river_rapid_gorge.jpg',
+      '/images/jhalong/jaldhaka_river_crystal_blue.jpg',
+      '/images/jhalong/samsing_canyon_panoramic.jpg',
+      '/images/jhalong/samsing_scenic_forest_road.jpg',
+      '/images/jhalong/jhalong_river_viewpoint_flags.jpg',
+      '/images/jhalong/jhalong_sunset_valley.jpg'
+    ],
+    highlights: [
+      'Bindu Indo-Bhutan Dam & Jaldhaka Hydroelectric Barrage',
+      'Suntalekhola Hanging Wooden Suspension Bridge with Buddhist prayer flags',
+      'Rocky Island giant boulders & natural freshwater pools on Murti River',
+      'Jhalong River Gorge, curved arch bridge & riverside birding',
+      'Iconic "I Love Samsing" viewpoint & sprawling tea garden valleys',
+      'Scenic canopy drive through deep Sal forests & cardamom curing hamlets'
+    ],
+    inclusions: [
+      'Accommodation in comfortable hillside or riverside resort/cottage',
+      'All local transfers & sightseeing in dedicated private AC vehicle',
+      'Driver allowances, toll taxes, fuel & parking fees',
+      'Daily breakfast at accommodation',
+      'Sightseeing coordination & route guidance'
+    ],
+    exclusions: [
+      'Personal expenses (laundry, extra meals, beverages)',
+      'Entry tickets or camera fees at viewpoints (where applicable)',
+      'Any service not explicitly mentioned under inclusions'
+    ],
+    itinerary: [
+      {
+        dayNumber: 1,
+        title: 'Arrival & Scenic Exploration of Samsing, Suntalekhola & Rocky Island',
+        description: 'Pick-up from NJP / Bagdogra / Malbazar / Hasimara and scenic drive through Chalsa tea estates into Samsing foothills. Stop at the iconic "I Love Samsing" viewpoint for sweeping valley vistas. Continue uphill to Suntalekhola to walk across the historic hanging wooden suspension footbridge draped in colorful Buddhist prayer flags over the gushing mountain stream. In the afternoon, relax beside the crystal-clear natural pools and giant boulders of Rocky Island on Murti River. Check in to your serene foothill cottage.',
+        activities: ['Scenic Tea Garden Drive', '"I Love Samsing" Viewpoint', 'Suntalekhola Suspension Bridge', 'Rocky Island River Relaxation']
+      },
+      {
+        dayNumber: 2,
+        title: 'Jhalong River Gorge, Curved Arch Bridge & Bindu Indo-Bhutan Border Dam',
+        description: 'After a hearty breakfast, drive down winding mountain hairpins into the deep valley of Jhalong on the banks of Jaldhaka River. Marvel at the giant curved arch bridge and observe Himalayan river birds like the Crested Kingfisher and Brown Dipper. Continue onward to Bindu, the last frontier village of West Bengal on the Bhutan border. Stand right beside the historic Bindu Dam / Jaldhaka Barrage at the tri-junction of Bindu Khola, Dudh Pokhari, and Jaldhaka rivers, gazing across into Bhutanese mountain hamlets. Explore local cardamom (Elaichi) and orange markets before an evening campfire by the river.',
+        activities: ['Jhalong Arch Bridge & River Gorge', 'Bindu Indo-Bhutan Dam', 'Cardamom Market Walk', 'Riverside Evening Campfire']
+      },
+      {
+        dayNumber: 3,
+        title: 'Morning Forest Walk, Souvenir Tea Shopping & Departure',
+        description: 'Wake up to the melodious sounds of river water and chirping hill birds. Enjoy a refreshing morning stroll through lush green tea bushes and cardamom orchards. After breakfast, check out from the resort. Enjoy a scenic return drive with stops for fresh garden-packaged Dooars tea before drop-off at Malbazar / NJP / Bagdogra.',
+        activities: ['Morning Tea Garden Walk', 'Local Tea Shopping', 'Station Drop-off']
+      }
+    ],
+    importantNotes: [
+      'No special border permits required for Indian citizens visiting Bindu border viewpoint; carrying valid original Government photo ID is recommended.',
+      'Wear comfortable walking shoes with good grip for walking along river boulders at Rocky Island and Jhalong.',
+      'Bindu and Jhalong boast rare Himalayan bird species—carrying binoculars and cameras is highly recommended.'
+    ],
+    faqs: [
+      {
+        question: 'Is Bindu located right on the Bhutan border?',
+        answer: 'Yes! Bindu is the last village on the Indian side of West Bengal, separated from the hills of Bhutan only by the Jaldhaka River. You can clearly view Bhutanese hills and settlements right across the river.'
+      },
+      {
+        question: 'What is the best season to visit Samsing, Jhalong, and Bindu?',
+        answer: 'October through May offers the most pleasant climate, crystal-clear blue mountain rivers, and crisp Himalayan views. During monsoon (July to September), the region transforms into a dramatic lush green paradise with swollen mountain streams.'
+      }
+    ],
+    isFeatured: true,
+    isPublished: true
+  },
   {
     id: 'pkg-wild-dooars-explorer',
     name: 'Wild Dooars Rhino & Jungle Safari Special',
