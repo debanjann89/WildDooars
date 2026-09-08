@@ -35,11 +35,17 @@ export const Footer: React.FC<FooterProps> = ({ settings }) => {
             <ul className="space-y-3.5 text-xs text-slate-300">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
-                <span>
-                  <strong className="text-white">Wild Dooars Tours & Travels</strong>
+                <a
+                  href={settings.googleMapsUrl || 'https://www.google.com/maps/place/Wild+Dooars+Tours+%26+Travels,+near+Jaldapara+National+Park,+Badaitari,+Khauchandpara,+West+Bengal+735220/data=!4m2!3m1!1s0x39e3ad84beaf3259:0xb66d37b19c1db7b2'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-emerald-300 transition-colors block group"
+                >
+                  <strong className="text-white group-hover:text-emerald-400">Wild Dooars Tours & Travels</strong>
                   <br />
-                  {settings.address} ({settings.plusCode})
-                </span>
+                  <span>{settings.address} ({settings.plusCode})</span>
+                  <span className="block text-[10px] text-emerald-400 font-bold mt-0.5">View on Google Maps ↗</span>
+                </a>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-emerald-400 flex-shrink-0" />

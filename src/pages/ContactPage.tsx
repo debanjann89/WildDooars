@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Phone, MessageCircle, Send, CheckCircle2 } from 'lucide-react';
+import { MapPin, Phone, MessageCircle, Send, CheckCircle2, ExternalLink, Navigation } from 'lucide-react';
 import { apiService } from '../services/api';
 import type { BusinessSettings } from '../types';
 
@@ -52,6 +52,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
   const businessName = settings?.businessName || 'Wild Dooars Tours & Travels';
   const address = settings?.address || 'Near Jaldapara National Park, Badaitari, Khauchandpara, West Bengal 735220';
   const plusCode = settings?.plusCode || 'J7F5+25 Badaitari, West Bengal';
+  const googleMapsUrl = settings?.googleMapsUrl || 'https://www.google.com/maps/place/Wild+Dooars+Tours+%26+Travels,+near+Jaldapara+National+Park,+Badaitari,+Khauchandpara,+West+Bengal+735220/data=!4m2!3m1!1s0x39e3ad84beaf3259:0xb66d37b19c1db7b2';
 
   const whatsappUrl = `https://wa.me/${whatsappNum}?text=${encodeURIComponent(
     'Hello Wild Dooars Tours & Travels, I would like to plan a trip to Dooars. Please get in touch.'
@@ -125,21 +126,32 @@ export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
             </div>
 
             {/* Address & Plus Code Card */}
-            <div className="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm flex items-start gap-4 hover:shadow-md transition-all">
-              <div className="w-12 h-12 rounded-xl bg-[#15803d] text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+            <a
+              href={googleMapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm flex items-start gap-4 hover:shadow-md hover:border-emerald-300 transition-all group block"
+            >
+              <div className="w-12 h-12 rounded-xl bg-[#15803d] text-white flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-105 transition-transform">
                 <MapPin className="w-6 h-6" />
               </div>
-              <div>
-                <span className="text-xs font-extrabold uppercase text-slate-500 tracking-wider block mb-1">
-                  Office Location
-                </span>
-                <h4 className="text-sm font-extrabold text-slate-900 mb-1">{businessName}</h4>
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-extrabold uppercase text-slate-500 tracking-wider block">
+                    Office Location
+                  </span>
+                  <span className="text-[11px] font-bold text-[#15803d] flex items-center gap-1 group-hover:underline">
+                    <span>Open in Maps</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </span>
+                </div>
+                <h4 className="text-sm font-extrabold text-slate-900 mb-1 group-hover:text-[#15803d] transition-colors">{businessName}</h4>
                 <p className="text-xs text-slate-600 leading-relaxed mb-2">{address}</p>
                 <span className="inline-block bg-emerald-50 text-[#15803d] text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-emerald-200">
                   Plus Code: {plusCode}
                 </span>
               </div>
-            </div>
+            </a>
 
             {/* Facebook Card */}
             {settings?.facebookUrl && (
@@ -325,6 +337,53 @@ export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
                 </button>
               </form>
             )}
+          </div>
+        </div>
+
+        {/* Google Maps Location Section */}
+        <div className="mt-12 max-w-6xl mx-auto">
+          <div className="bg-gradient-to-r from-[#0a1f14] to-[#143622] rounded-3xl p-8 md:p-10 border border-emerald-900 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="space-y-3 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-800/60 rounded-full text-emerald-300 text-xs font-extrabold uppercase tracking-wider">
+                <Navigation className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Google Maps Location</span>
+              </div>
+              <h3 className="text-2xl font-black uppercase text-white tracking-tight">
+                Visit Wild Dooars Tours & Travels
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 max-w-xl leading-relaxed">
+                Located near Jaldapara National Park (Badaitari, Khauchandpara, West Bengal). Tap below to open live navigation or driving directions directly in Google Maps.
+              </p>
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-1 text-xs text-emerald-300 font-mono">
+                <span className="bg-white/10 px-2.5 py-1 rounded-lg">Plus Code: {plusCode}</span>
+                <span className="bg-white/10 px-2.5 py-1 rounded-lg">PIN: 735220</span>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row md:flex-col gap-3 shrink-0 w-full sm:w-auto">
+              <a
+                href={googleMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-4 bg-[#15803d] hover:bg-[#166534] text-white rounded-2xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2.5 shadow-lg hover:shadow-emerald-900/50 transition-all cursor-pointer"
+              >
+                <MapPin className="w-4 h-4 text-emerald-200" />
+                <span>Open in Google Maps</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                  'Wild Dooars Tours & Travels, near Jaldapara National Park, Badaitari, Khauchandpara, West Bengal 735220'
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-2xl text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              >
+                <Navigation className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Get Driving Directions</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>

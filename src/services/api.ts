@@ -25,7 +25,7 @@ const STORAGE_KEYS = {
   LOCKOUT_UNTIL: 'wd_lockout_until'
 };
 
-const DATA_VERSION_KEY = 'wd_data_version_v15';
+const DATA_VERSION_KEY = 'wd_data_version_v16';
 
 // Session timeout: 8 hours in milliseconds
 const SESSION_TIMEOUT_MS = 8 * 60 * 60 * 1000;
