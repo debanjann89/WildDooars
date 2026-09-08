@@ -562,9 +562,10 @@ export const initialPackages: Package[] = [
     duration: '5 Days / 4 Nights',
     shortDescription: 'Relaxed family vacation covering safaris, Gajoldoba Teesta dam, tea gardens, and Cooch Behar Royal Palace.',
     fullDescription: 'Designed for families with elderly members or children. Includes spacious vehicles (Innova/Ertiga/Bolero), smooth itineraries, comfortable resort stays, and well-paced sightseeing.',
-    mainImage: '/images/package_family_main.jpg',
+    mainImage: '/images/package_family_main.jpg?v=family_v2',
     gallery: [
-      '/images/package_family_main.jpg',
+      '/images/package_family_main.jpg?v=family_v2',
+      '/images/package_family_full.jpg',
       '/images/package_family_gallery1.jpg',
       '/images/package_family_gallery2.jpg'
     ],
