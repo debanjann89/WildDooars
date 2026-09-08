@@ -36,7 +36,7 @@ export const Footer: React.FC<FooterProps> = ({ settings }) => {
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
                 <a
-                  href={settings.googleMapsUrl || 'https://www.google.com/maps/place/Wild+Dooars+Tours+%26+Travels,+near+Jaldapara+National+Park,+Badaitari,+Khauchandpara,+West+Bengal+735220/data=!4m2!3m1!1s0x39e3ad84beaf3259:0xb66d37b19c1db7b2'}
+                  href={settings.googleMapsUrl || 'https://maps.app.goo.gl/BKCtmveG53u8TuVn6'}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-emerald-300 transition-colors block group"

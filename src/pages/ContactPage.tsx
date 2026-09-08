@@ -52,7 +52,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
   const businessName = settings?.businessName || 'Wild Dooars Tours & Travels';
   const address = settings?.address || 'Near Jaldapara National Park, Badaitari, Khauchandpara, West Bengal 735220';
   const plusCode = settings?.plusCode || 'J7F5+25 Badaitari, West Bengal';
-  const googleMapsUrl = settings?.googleMapsUrl || 'https://www.google.com/maps/place/Wild+Dooars+Tours+%26+Travels,+near+Jaldapara+National+Park,+Badaitari,+Khauchandpara,+West+Bengal+735220/data=!4m2!3m1!1s0x39e3ad84beaf3259:0xb66d37b19c1db7b2';
+  const googleMapsUrl = settings?.googleMapsUrl || 'https://maps.app.goo.gl/BKCtmveG53u8TuVn6';
 
   const whatsappUrl = `https://wa.me/${whatsappNum}?text=${encodeURIComponent(
     'Hello Wild Dooars Tours & Travels, I would like to plan a trip to Dooars. Please get in touch.'

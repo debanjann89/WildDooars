@@ -11,7 +11,7 @@ export const initialSettings: BusinessSettings = {
   plusCode: 'J7F5+25 Badaitari, West Bengal',
   googleRating: '4.8 ★',
   reviewsCount: '97 reviews',
-  googleMapsUrl: 'https://www.google.com/maps/place/Wild+Dooars+Tours+%26+Travels,+near+Jaldapara+National+Park,+Badaitari,+Khauchandpara,+West+Bengal+735220/data=!4m2!3m1!1s0x39e3ad84beaf3259:0xb66d37b19c1db7b2',
+  googleMapsUrl: 'https://maps.app.goo.gl/BKCtmveG53u8TuVn6',
   facebookUrl: 'https://www.facebook.com/wilddooarstours',
   heroHeadline: 'Explore the Wild Heart of Dooars',
   heroSubheadline: 'Wildlife, forests, rivers and unforgettable journeys — planned around your travel experience.',
