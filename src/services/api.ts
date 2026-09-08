@@ -1,6 +1,14 @@
 import type { Package, Destination, SafariInfo, Vehicle, Hotel, BusinessSettings, Enquiry } from '../types';
 import { initialSettings, initialDestinations, initialPackages, initialSafaris, initialVehicles, initialHotels, initialEnquiries } from './mockData';
 
+// Gallery types
+export interface GalleryPhoto {
+  id: string;
+  src: string;
+  alt: string;
+  category: 'forest' | 'animals' | 'safaris';
+}
+
 const STORAGE_KEYS = {
   SETTINGS: 'wd_settings',
   DESTINATIONS: 'wd_destinations',
@@ -10,10 +18,47 @@ const STORAGE_KEYS = {
   HOTELS: 'wd_hotels',
   ENQUIRIES: 'wd_enquiries',
   MEDIA: 'wd_media',
-  AUTH: 'wd_admin_auth'
+  GALLERY: 'wd_gallery',
+  AUTH: 'wd_admin_auth',
+  AUTH_TIMESTAMP: 'wd_admin_auth_ts',
+  LOGIN_ATTEMPTS: 'wd_login_attempts',
+  LOCKOUT_UNTIL: 'wd_lockout_until'
 };
 
-const DATA_VERSION_KEY = 'wd_data_version_v13';
+const DATA_VERSION_KEY = 'wd_data_version_v14';
+
+// Session timeout: 8 hours in milliseconds
+const SESSION_TIMEOUT_MS = 8 * 60 * 60 * 1000;
+
+// Brute force protection
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOCKOUT_DURATION_MS = 15 * 60 * 1000; // 15 minutes
+
+// SHA-256 hash of the admin password — actual password NEVER appears in source code
+const ADMIN_PASSWORD_HASH = 'cebd6ea57963c133284d784e6d84537ce7ec927621cab720bd04d84e5cdf9d50';
+const ADMIN_USERNAMES = ['admin', 'admin@wilddooars.com'];
+
+// Default gallery photos (migrated from galleryData.ts)
+const initialGalleryPhotos: GalleryPhoto[] = [
+  { id: '1', src: '/images/gallery/gallery_01.jpg', alt: 'Jayanti Riverbed and Bhutan Hills', category: 'forest' },
+  { id: '2', src: '/images/gallery/gallery_02.jpg', alt: 'Jayanti River Trail', category: 'forest' },
+  { id: '3', src: '/images/gallery/gallery_03.jpg', alt: 'Mountain Riverbed Stones', category: 'forest' },
+  { id: '4', src: '/images/gallery/gallery_04.jpg', alt: 'Indian Bison (Gaur)', category: 'animals' },
+  { id: '5', src: '/images/gallery/gallery_05.jpg', alt: 'One-Horned Rhinoceros', category: 'animals' },
+  { id: '6', src: '/images/gallery/gallery_06.jpg', alt: 'Asian Elephant Herd', category: 'animals' },
+  { id: '7', src: '/images/gallery/gallery_07.jpg', alt: 'Elephant Safari in Dooars', category: 'safaris' },
+  { id: '8', src: '/images/gallery/gallery_08.jpg', alt: 'Wild Tusker Elephant', category: 'animals' },
+  { id: '9', src: '/images/gallery/gallery_09.jpg', alt: 'Indian Leopard', category: 'animals' },
+  { id: '10', src: '/images/gallery/gallery_10.jpg', alt: 'Jungle Jeep Safari', category: 'safaris' },
+  { id: '11', src: '/images/gallery/gallery_11.jpg', alt: 'Indian Gaur Bull', category: 'animals' },
+  { id: '12', src: '/images/gallery/gallery_12.jpg', alt: 'Aerial Forest Canopy and River', category: 'forest' },
+  { id: '13', src: '/images/gallery/gallery_13.jpg', alt: 'Morning Elephant Safari', category: 'safaris' },
+  { id: '14', src: '/images/gallery/gallery_14.jpg', alt: 'Barking Deer', category: 'animals' },
+  { id: '15', src: '/images/gallery/gallery_15.jpg', alt: 'Sambar Deer Stag', category: 'animals' },
+  { id: '16', src: '/images/gallery/gallery_16.jpg', alt: 'Sambar Deer in Meadow', category: 'animals' },
+  { id: '17', src: '/images/gallery/gallery_17.jpg', alt: 'Rhino Mother and Calf', category: 'animals' },
+  { id: '18', src: '/images/gallery/gallery_18.jpg', alt: 'Indian Peacock', category: 'animals' }
+];
 
 // Force sync localStorage with exact dataset if version changes
 function initializeLocalStorage() {
@@ -24,15 +69,28 @@ function initializeLocalStorage() {
     localStorage.setItem(STORAGE_KEYS.SAFARIS, JSON.stringify(initialSafaris));
     localStorage.setItem(STORAGE_KEYS.VEHICLES, JSON.stringify(initialVehicles));
     localStorage.setItem(STORAGE_KEYS.HOTELS, JSON.stringify(initialHotels));
+    localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(initialGalleryPhotos));
     localStorage.setItem(DATA_VERSION_KEY, 'synced');
   }
 
   if (!localStorage.getItem(STORAGE_KEYS.ENQUIRIES)) {
     localStorage.setItem(STORAGE_KEYS.ENQUIRIES, JSON.stringify(initialEnquiries));
   }
+
+  if (!localStorage.getItem(STORAGE_KEYS.GALLERY)) {
+    localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(initialGalleryPhotos));
+  }
 }
 
 initializeLocalStorage();
+
+// SHA-256 hashing utility using Web Crypto API
+async function sha256(message: string): Promise<string> {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
 // Helper to make API requests with fallback to localStorage
 async function fetchWithFallback<T>(url: string, storageKey: string, defaultData: T): Promise<T> {
@@ -206,6 +264,31 @@ export const apiService = {
     return true;
   },
 
+  // GALLERY
+  async getGallery(): Promise<GalleryPhoto[]> {
+    const stored = localStorage.getItem(STORAGE_KEYS.GALLERY);
+    return stored ? JSON.parse(stored) : initialGalleryPhotos;
+  },
+
+  async saveGalleryPhoto(photo: GalleryPhoto): Promise<boolean> {
+    const photos = await this.getGallery();
+    const index = photos.findIndex(p => p.id === photo.id);
+    if (index >= 0) {
+      photos[index] = photo;
+    } else {
+      photos.push(photo);
+    }
+    localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(photos));
+    return true;
+  },
+
+  async deleteGalleryPhoto(id: string): Promise<boolean> {
+    const photos = await this.getGallery();
+    const filtered = photos.filter(p => p.id !== id);
+    localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(filtered));
+    return true;
+  },
+
   // ENQUIRIES
   async getEnquiries(): Promise<Enquiry[]> {
     return fetchWithFallback<Enquiry[]>('/api/enquiries/index.php', STORAGE_KEYS.ENQUIRIES, initialEnquiries);
@@ -265,20 +348,88 @@ export const apiService = {
     return true;
   },
 
-  // AUTH
+  // AUTH — Secure SHA-256 hashed authentication with brute-force protection
   isLoggedIn(): boolean {
-    return localStorage.getItem(STORAGE_KEYS.AUTH) === 'true';
+    const authFlag = localStorage.getItem(STORAGE_KEYS.AUTH);
+    if (authFlag !== 'true') return false;
+
+    // Check session timeout
+    const authTimestamp = localStorage.getItem(STORAGE_KEYS.AUTH_TIMESTAMP);
+    if (authTimestamp) {
+      const elapsed = Date.now() - parseInt(authTimestamp, 10);
+      if (elapsed > SESSION_TIMEOUT_MS) {
+        this.logout();
+        return false;
+      }
+    }
+
+    return true;
   },
 
-  login(username: string, pass: string): boolean {
-    if ((username === 'admin@wilddooars.com' || username === 'admin') && pass === 'WildDooars@2026') {
-      localStorage.setItem(STORAGE_KEYS.AUTH, 'true');
-      return true;
-    }
+  isLockedOut(): boolean {
+    const lockoutUntil = localStorage.getItem(STORAGE_KEYS.LOCKOUT_UNTIL);
+    if (!lockoutUntil) return false;
+    if (Date.now() < parseInt(lockoutUntil, 10)) return true;
+    // Lockout expired, clear it
+    localStorage.removeItem(STORAGE_KEYS.LOCKOUT_UNTIL);
+    localStorage.removeItem(STORAGE_KEYS.LOGIN_ATTEMPTS);
     return false;
+  },
+
+  getLockoutRemainingSeconds(): number {
+    const lockoutUntil = localStorage.getItem(STORAGE_KEYS.LOCKOUT_UNTIL);
+    if (!lockoutUntil) return 0;
+    const remaining = parseInt(lockoutUntil, 10) - Date.now();
+    return remaining > 0 ? Math.ceil(remaining / 1000) : 0;
+  },
+
+  getLoginAttempts(): number {
+    const attempts = localStorage.getItem(STORAGE_KEYS.LOGIN_ATTEMPTS);
+    return attempts ? parseInt(attempts, 10) : 0;
+  },
+
+  async login(username: string, pass: string): Promise<boolean> {
+    // Check lockout first
+    if (this.isLockedOut()) return false;
+
+    // Verify username
+    const normalizedUsername = username.trim().toLowerCase();
+    if (!ADMIN_USERNAMES.includes(normalizedUsername)) {
+      this._recordFailedAttempt();
+      return false;
+    }
+
+    // Hash the entered password and compare with stored hash
+    const enteredHash = await sha256(pass);
+    if (enteredHash !== ADMIN_PASSWORD_HASH) {
+      this._recordFailedAttempt();
+      return false;
+    }
+
+    // Success — clear attempts and set auth
+    localStorage.removeItem(STORAGE_KEYS.LOGIN_ATTEMPTS);
+    localStorage.removeItem(STORAGE_KEYS.LOCKOUT_UNTIL);
+    localStorage.setItem(STORAGE_KEYS.AUTH, 'true');
+    localStorage.setItem(STORAGE_KEYS.AUTH_TIMESTAMP, Date.now().toString());
+    return true;
+  },
+
+  _recordFailedAttempt(): void {
+    const attempts = this.getLoginAttempts() + 1;
+    localStorage.setItem(STORAGE_KEYS.LOGIN_ATTEMPTS, attempts.toString());
+    if (attempts >= MAX_LOGIN_ATTEMPTS) {
+      localStorage.setItem(STORAGE_KEYS.LOCKOUT_UNTIL, (Date.now() + LOCKOUT_DURATION_MS).toString());
+    }
+  },
+
+  refreshSession(): void {
+    if (this.isLoggedIn()) {
+      localStorage.setItem(STORAGE_KEYS.AUTH_TIMESTAMP, Date.now().toString());
+    }
   },
 
   logout(): void {
     localStorage.removeItem(STORAGE_KEYS.AUTH);
+    localStorage.removeItem(STORAGE_KEYS.AUTH_TIMESTAMP);
   }
 };

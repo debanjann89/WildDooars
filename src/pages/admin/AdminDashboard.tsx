@@ -1,34 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Compass, MapPin, Car, Hotel as HotelIcon, Inbox, Phone, MessageCircle } from 'lucide-react';
+import { Compass, MapPin, Car, Hotel as HotelIcon, Inbox, Phone, MessageCircle, Trees, Image as ImageIcon } from 'lucide-react';
 import { apiService } from '../../services/api';
-import type { Package, Destination, Vehicle, Hotel, Enquiry } from '../../types';
+import type { Package, Destination, Vehicle, Hotel, SafariInfo, Enquiry } from '../../types';
+import type { GalleryPhoto } from '../../services/api';
 
 export const AdminDashboard: React.FC = () => {
   const [packages, setPackages] = useState<Package[]>([]);
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [hotels, setHotels] = useState<Hotel[]>([]);
+  const [safaris, setSafaris] = useState<SafariInfo[]>([]);
+  const [gallery, setGallery] = useState<GalleryPhoto[]>([]);
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
 
   useEffect(() => {
     async function loadData() {
-      const pkgs = await apiService.getPackages();
-      const dests = await apiService.getDestinations();
-      const vehs = await apiService.getVehicles();
-      const htls = await apiService.getHotels();
-      const enqs = await apiService.getEnquiries();
+      const [pkgs, dests, vehs, htls, sfrs, glry, enqs] = await Promise.all([
+        apiService.getPackages(),
+        apiService.getDestinations(),
+        apiService.getVehicles(),
+        apiService.getHotels(),
+        apiService.getSafaris(),
+        apiService.getGallery(),
+        apiService.getEnquiries()
+      ]);
 
       setPackages(pkgs);
       setDestinations(dests);
       setVehicles(vehs);
       setHotels(htls);
+      setSafaris(sfrs);
+      setGallery(glry);
       setEnquiries(enqs);
     }
     loadData();
   }, []);
 
   const newEnquiriesCount = enquiries.filter((e) => e.status === 'New').length;
+
+  const kpiCards = [
+    { label: 'Packages', count: packages.length, icon: Compass, link: '/admin/packages' },
+    { label: 'Destinations', count: destinations.length, icon: MapPin, link: '/admin/destinations' },
+    { label: 'Safaris', count: safaris.length, icon: Trees, link: '/admin/safaris' },
+    { label: 'Vehicles', count: vehicles.length, icon: Car, link: '/admin/vehicles' },
+    { label: 'Hotels', count: hotels.length, icon: HotelIcon, link: '/admin/hotels' },
+    { label: 'Gallery Photos', count: gallery.length, icon: ImageIcon, link: '/admin/gallery' },
+  ];
 
   return (
     <div className="space-y-8 font-sans">
@@ -38,46 +56,55 @@ export const AdminDashboard: React.FC = () => {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <div className="bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold text-slate-500 uppercase">Packages</span>
-            <Compass className="w-5 h-5 text-[#15803d]" />
-          </div>
-          <span className="text-3xl font-black text-slate-900">{packages.length}</span>
-        </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {kpiCards.map((kpi) => {
+          const Icon = kpi.icon;
+          return (
+            <Link
+              key={kpi.label}
+              to={kpi.link}
+              className="bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm hover:shadow-md hover:border-emerald-200 transition-all group"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-bold text-slate-500 uppercase">{kpi.label}</span>
+                <Icon className="w-5 h-5 text-[#15803d] group-hover:scale-110 transition-transform" />
+              </div>
+              <span className="text-3xl font-black text-slate-900">{kpi.count}</span>
+            </Link>
+          );
+        })}
 
-        <div className="bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold text-slate-500 uppercase">Destinations</span>
-            <MapPin className="w-5 h-5 text-[#15803d]" />
-          </div>
-          <span className="text-3xl font-black text-slate-900">{destinations.length}</span>
-        </div>
-
-        <div className="bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold text-slate-500 uppercase">Vehicles</span>
-            <Car className="w-5 h-5 text-[#15803d]" />
-          </div>
-          <span className="text-3xl font-black text-slate-900">{vehicles.length}</span>
-        </div>
-
-        <div className="bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold text-slate-500 uppercase">Hotels</span>
-            <HotelIcon className="w-5 h-5 text-[#15803d]" />
-          </div>
-          <span className="text-3xl font-black text-slate-900">{hotels.length}</span>
-        </div>
-
-        <div className="bg-emerald-50 p-5 rounded-2xl border border-emerald-200 shadow-sm col-span-2 md:col-span-1">
+        {/* New Enquiries - Highlighted */}
+        <Link
+          to="/admin/enquiries"
+          className="bg-emerald-50 p-5 rounded-2xl border border-emerald-200 shadow-sm hover:shadow-md transition-all col-span-2 md:col-span-1 group"
+        >
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold text-[#15803d] uppercase">New Enquiries</span>
-            <Inbox className="w-5 h-5 text-[#15803d]" />
+            <Inbox className="w-5 h-5 text-[#15803d] group-hover:scale-110 transition-transform" />
           </div>
           <span className="text-3xl font-black text-[#15803d]">{newEnquiriesCount}</span>
-        </div>
+        </Link>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <Link to="/admin/packages" className="p-4 bg-white rounded-2xl border border-stone-200 hover:border-emerald-200 text-center transition-all group">
+          <Compass className="w-6 h-6 text-[#15803d] mx-auto mb-2 group-hover:scale-110 transition-transform" />
+          <span className="text-xs font-bold text-slate-700 block">Manage Packages</span>
+        </Link>
+        <Link to="/admin/gallery" className="p-4 bg-white rounded-2xl border border-stone-200 hover:border-emerald-200 text-center transition-all group">
+          <ImageIcon className="w-6 h-6 text-[#15803d] mx-auto mb-2 group-hover:scale-110 transition-transform" />
+          <span className="text-xs font-bold text-slate-700 block">Manage Gallery</span>
+        </Link>
+        <Link to="/admin/hotels" className="p-4 bg-white rounded-2xl border border-stone-200 hover:border-emerald-200 text-center transition-all group">
+          <HotelIcon className="w-6 h-6 text-[#15803d] mx-auto mb-2 group-hover:scale-110 transition-transform" />
+          <span className="text-xs font-bold text-slate-700 block">Manage Hotels</span>
+        </Link>
+        <Link to="/admin/enquiries" className="p-4 bg-white rounded-2xl border border-stone-200 hover:border-emerald-200 text-center transition-all group">
+          <Inbox className="w-6 h-6 text-[#15803d] mx-auto mb-2 group-hover:scale-110 transition-transform" />
+          <span className="text-xs font-bold text-slate-700 block">View Enquiries</span>
+        </Link>
       </div>
 
       {/* Recent Enquiries Inbox */}

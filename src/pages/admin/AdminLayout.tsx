@@ -34,6 +34,7 @@ export const AdminLayout: React.FC = () => {
     { name: 'Safaris', path: '/admin/safaris', icon: Trees },
     { name: 'Vehicles', path: '/admin/vehicles', icon: Car },
     { name: 'Hotels', path: '/admin/hotels', icon: HotelIcon },
+    { name: 'Gallery', path: '/admin/gallery', icon: ImageIcon },
     { name: 'Enquiries Inbox', path: '/admin/enquiries', icon: Inbox },
     { name: 'Media Library', path: '/admin/media', icon: ImageIcon },
     { name: 'Website Settings', path: '/admin/settings', icon: Settings },

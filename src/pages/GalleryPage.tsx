@@ -1,16 +1,28 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { galleryPhotos, galleryCategories } from '../data/galleryData';
-import type { GalleryPhoto } from '../data/galleryData';
+import { apiService } from '../services/api';
+import type { GalleryPhoto } from '../services/api';
+
+const galleryCategories = [
+  { id: 'all', label: 'All Photos' },
+  { id: 'forest', label: 'Forest & Landscapes' },
+  { id: 'animals', label: 'Wild Animals' },
+  { id: 'safaris', label: 'Jungle Safaris' },
+] as const;
 
 interface GalleryPageProps {
   onOpenEnquiry: (contextData?: { title?: string; tripType?: string }) => void;
 }
 
 export const GalleryPage: React.FC<GalleryPageProps> = ({ onOpenEnquiry }) => {
+  const [galleryPhotos, setGalleryPhotos] = useState<GalleryPhoto[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [activePhotoIndex, setActivePhotoIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    apiService.getGallery().then(setGalleryPhotos);
+  }, []);
 
   // Filter photos
   const filteredPhotos = selectedCategory === 'all'
