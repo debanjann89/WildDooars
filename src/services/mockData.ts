@@ -6,7 +6,7 @@ export const initialSettings: BusinessSettings = {
   phone: '081164 42729',
   alternatePhone: '062961 56601',
   whatsapp: '918116442729',
-  email: 'info@wilddooarstours.com',
+  email: 'info@wilddooarstoursandtravels.in',
   address: 'Near Jaldapara National Park, Badaitari, Khauchandpara, West Bengal 735220',
   plusCode: 'J7F5+25 Badaitari, West Bengal',
   googleRating: '4.8 ★',

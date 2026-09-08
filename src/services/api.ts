@@ -25,7 +25,7 @@ const STORAGE_KEYS = {
   LOCKOUT_UNTIL: 'wd_lockout_until'
 };
 
-const DATA_VERSION_KEY = 'wd_data_version_v14';
+const DATA_VERSION_KEY = 'wd_data_version_v15';
 
 // Session timeout: 8 hours in milliseconds
 const SESSION_TIMEOUT_MS = 8 * 60 * 60 * 1000;
@@ -36,7 +36,7 @@ const LOCKOUT_DURATION_MS = 15 * 60 * 1000; // 15 minutes
 
 // SHA-256 hash of the admin password — actual password NEVER appears in source code
 const ADMIN_PASSWORD_HASH = 'cebd6ea57963c133284d784e6d84537ce7ec927621cab720bd04d84e5cdf9d50';
-const ADMIN_USERNAMES = ['admin', 'admin@wilddooars.com'];
+const ADMIN_USERNAMES = ['admin', 'admin@wilddooarstoursandtravels.in', 'admin@wilddooars.com'];
 
 // Default gallery photos (migrated from galleryData.ts)
 const initialGalleryPhotos: GalleryPhoto[] = [
