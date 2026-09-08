@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && cp -r backend/api dist/api && cp -r backend/config dist/config && cp -r backend/database dist/database",
     "lint": "oxlint",
     "preview": "vite preview"
   },
