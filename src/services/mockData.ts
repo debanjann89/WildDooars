@@ -600,7 +600,7 @@ export const initialVehicles: Vehicle[] = [
     fuelType: 'Petrol',
     acType: 'AC',
     features: ['Budget Hatchback', 'Tall Boy Stance', 'Easy Airport Pickup', 'Economical Local Sightseeing'],
-    image: '/images/car_wagonr.jpg',
+    image: '/images/car_wagonr.jpg?v=wagnor_v2',
     isPublished: true
   }
 ];
