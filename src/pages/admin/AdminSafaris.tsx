@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Plus, Edit2, Trash2, Save, X, Trees } from 'lucide-react';
 import { apiService } from '../../services/api';
 import type { SafariInfo } from '../../types';
+import { SinglePhotoUploader } from '../../components/admin/SinglePhotoUploader';
 
 export const AdminSafaris: React.FC = () => {
   const [safaris, setSafaris] = useState<SafariInfo[]>([]);
@@ -164,35 +165,15 @@ export const AdminSafaris: React.FC = () => {
                 />
               </div>
 
-              {/* 5. Image URL with preview */}
+              {/* 5. Safari Photo */}
               <div>
-                <label className="block text-xs font-extrabold text-stone-700 uppercase tracking-wider mb-1.5">
-                  Image URL
-                </label>
-                <div className="flex items-center gap-3">
-                  <input
-                    type="text"
-                    value={editingSafari.image || ''}
-                    onChange={(e) => setEditingSafari({ ...editingSafari, image: e.target.value })}
-                    placeholder="https://... or /images/..."
-                    className="flex-1 text-sm rounded-xl border border-stone-300 p-2.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#15803d] font-mono"
-                  />
-                  {editingSafari.image ? (
-                    <img
-                      src={editingSafari.image}
-                      alt="Preview"
-                      className="w-12 h-12 rounded-xl object-cover border border-stone-200 shrink-0 shadow-sm"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80';
-                      }}
-                    />
-                  ) : (
-                    <div className="w-12 h-12 rounded-xl border border-dashed border-stone-300 bg-stone-50 flex items-center justify-center shrink-0 text-stone-400">
-                      <Trees className="w-5 h-5 text-stone-300" />
-                    </div>
-                  )}
-                </div>
+                <SinglePhotoUploader
+                  label="Safari Photo"
+                  currentImage={editingSafari.image}
+                  aspectHint="Landscape (16:9 recommended)"
+                  onImageSelected={(url) => setEditingSafari({ ...editingSafari, image: url })}
+                  onRemove={() => setEditingSafari({ ...editingSafari, image: '' })}
+                />
               </div>
 
               {/* 6. Availability Note */}

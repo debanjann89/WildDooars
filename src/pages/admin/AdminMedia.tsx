@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-import { Copy, Check, Image as ImageIcon } from 'lucide-react';
 
 interface MediaEntry {
   id: string;
@@ -115,15 +113,37 @@ const projectMedia: MediaEntry[] = [
   { id: 'misc01', name: 'Wild Dooars Logo', url: '/images/logo.png', folder: 'Brand' },
 ];
 
-const folderTabs = ['All', 'Gallery', 'Hotels', 'Vehicles', 'Packages', 'Jhalong', 'Wildlife', 'Destinations', 'Brand'];
+import React, { useState, useEffect, useRef } from 'react';
+import { Copy, Check, Image as ImageIcon, UploadCloud, Trash2, Loader2 } from 'lucide-react';
+import { processMultipleImageFiles } from '../../utils/imageUpload';
+
+const UPLOADED_MEDIA_KEY = 'wd_uploaded_media';
 
 export const AdminMedia: React.FC = () => {
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
   const [activeFolder, setActiveFolder] = useState('All');
+  const [uploadedMedia, setUploadedMedia] = useState<MediaEntry[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(UPLOADED_MEDIA_KEY);
+      if (stored) {
+        setUploadedMedia(JSON.parse(stored));
+      }
+    } catch {
+      // Ignore
+    }
+  }, []);
+
+  const allMedia = [...uploadedMedia, ...projectMedia];
+
+  const folderTabs = ['All', 'Uploaded', 'Gallery', 'Hotels', 'Vehicles', 'Packages', 'Jhalong', 'Wildlife', 'Destinations', 'Brand'];
 
   const filteredMedia = activeFolder === 'All'
-    ? projectMedia
-    : projectMedia.filter(m => m.folder === activeFolder);
+    ? allMedia
+    : allMedia.filter(m => m.folder === activeFolder);
 
   const handleCopy = (url: string) => {
     navigator.clipboard.writeText(url);
@@ -131,13 +151,68 @@ export const AdminMedia: React.FC = () => {
     setTimeout(() => setCopiedUrl(null), 2000);
   };
 
+  const handleUploadFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    try {
+      setIsProcessing(true);
+      const dataUrls = await processMultipleImageFiles(files);
+      const newEntries: MediaEntry[] = dataUrls.map((url, i) => ({
+        id: 'up-' + Date.now() + '-' + i,
+        name: files[i]?.name?.replace(/\.[^/.]+$/, '') || 'Uploaded Photo',
+        url,
+        folder: 'Uploaded'
+      }));
+
+      const updated = [...newEntries, ...uploadedMedia];
+      setUploadedMedia(updated);
+      localStorage.setItem(UPLOADED_MEDIA_KEY, JSON.stringify(updated));
+      setActiveFolder('Uploaded');
+    } catch (err) {
+      alert('Failed to process image files.');
+    } finally {
+      setIsProcessing(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handleDeleteUploaded = (id: string) => {
+    if (window.confirm('Delete this uploaded photo from media library?')) {
+      const updated = uploadedMedia.filter(m => m.id !== id);
+      setUploadedMedia(updated);
+      localStorage.setItem(UPLOADED_MEDIA_KEY, JSON.stringify(updated));
+    }
+  };
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-black uppercase text-slate-900 tracking-tight">Media Library</h1>
-        <p className="text-xs text-slate-600 mt-0.5">
-          Browse all {projectMedia.length} project images. Copy paths to use in other editors.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-black uppercase text-slate-900 tracking-tight">Media Library</h1>
+          <p className="text-xs text-slate-600 mt-0.5">
+            Browse all {allMedia.length} project images or upload new ones from your device gallery.
+          </p>
+        </div>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleUploadFiles}
+          className="hidden"
+        />
+
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={isProcessing}
+          className="px-4 py-2.5 bg-[#15803d] hover:bg-[#166534] text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-xs transition-colors cursor-pointer self-start sm:self-auto"
+        >
+          {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
+          <span>Upload from Device Gallery</span>
+        </button>
       </div>
 
       {/* Folder Filter Tabs */}
@@ -186,13 +261,24 @@ export const AdminMedia: React.FC = () => {
                 <span className="font-bold text-stone-900 block truncate text-xs">{m.name}</span>
                 <span className="text-[10px] text-stone-400 font-mono truncate block">{m.url}</span>
               </div>
-              <button
-                onClick={() => handleCopy(m.url)}
-                className="p-1.5 bg-stone-100 hover:bg-emerald-100 text-stone-700 hover:text-emerald-900 rounded-lg flex items-center gap-1 flex-shrink-0 transition-colors"
-                title="Copy image path"
-              >
-                {copiedUrl === m.url ? <Check className="w-3.5 h-3.5 text-emerald-700" /> : <Copy className="w-3.5 h-3.5" />}
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => handleCopy(m.url)}
+                  className="p-1.5 bg-stone-100 hover:bg-emerald-100 text-stone-700 hover:text-emerald-900 rounded-lg flex items-center gap-1 flex-shrink-0 transition-colors cursor-pointer"
+                  title="Copy image path"
+                >
+                  {copiedUrl === m.url ? <Check className="w-3.5 h-3.5 text-emerald-700" /> : <Copy className="w-3.5 h-3.5" />}
+                </button>
+                {m.folder === 'Uploaded' && (
+                  <button
+                    onClick={() => handleDeleteUploaded(m.id)}
+                    className="p-1.5 bg-stone-100 hover:bg-red-100 text-stone-500 hover:text-red-700 rounded-lg transition-colors cursor-pointer"
+                    title="Delete uploaded photo"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))}

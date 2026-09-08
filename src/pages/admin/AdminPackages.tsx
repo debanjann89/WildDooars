@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import type { Package, ItineraryDay, FAQItem } from '../../types';
 import { apiService } from '../../services/api';
 import { Edit, Trash2, Plus, X, Image as ImageIcon, Save } from 'lucide-react';
+import { SinglePhotoUploader } from '../../components/admin/SinglePhotoUploader';
+import { MultiPhotoUploader } from '../../components/admin/MultiPhotoUploader';
 
 export const AdminPackages: React.FC = () => {
   const [packages, setPackages] = useState<Package[]>([]);
@@ -10,7 +12,6 @@ export const AdminPackages: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // New item states
-  const [newGalleryUrl, setNewGalleryUrl] = useState('');
   const [newHighlight, setNewHighlight] = useState('');
   const [newInclusion, setNewInclusion] = useState('');
   const [newExclusion, setNewExclusion] = useState('');
@@ -341,19 +342,14 @@ export const AdminPackages: React.FC = () => {
                       className="w-full border rounded-xl px-3 py-2 text-sm"
                     />
                   </div>
-                  <div>
-                    <label className="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-1">Main Image URL</label>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={editing.mainImage || ''}
-                        onChange={(e) => setEditing({ ...editing, mainImage: e.target.value })}
-                        className="flex-1 border rounded-xl px-3 py-2 text-sm"
-                      />
-                      {editing.mainImage && (
-                        <img src={editing.mainImage} alt="Preview" className="w-10 h-10 object-cover rounded" />
-                      )}
-                    </div>
+                  <div className="col-span-1 md:col-span-2">
+                    <SinglePhotoUploader
+                      label="Package Main Thumbnail Photo"
+                      currentImage={editing.mainImage}
+                      aspectHint="Landscape (3:2 or 16:9 recommended)"
+                      onImageSelected={(url) => setEditing({ ...editing, mainImage: url })}
+                      onRemove={() => setEditing({ ...editing, mainImage: '' })}
+                    />
                   </div>
                 </div>
               </section>
@@ -386,29 +382,12 @@ export const AdminPackages: React.FC = () => {
               {/* Lists */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Gallery */}
-                <section>
-                  <h3 className="text-sm font-extrabold text-gray-900 uppercase tracking-wider mb-2">Gallery</h3>
-                  <div className="flex gap-2 mb-2">
-                    <input
-                      type="text"
-                      value={newGalleryUrl}
-                      onChange={(e) => setNewGalleryUrl(e.target.value)}
-                      placeholder="Image URL"
-                      className="flex-1 border rounded-xl px-3 py-2 text-sm"
-                    />
-                    <button onClick={() => addItem('gallery', newGalleryUrl, setNewGalleryUrl)} className="bg-primary text-white px-3 py-2 rounded-xl text-sm font-bold">Add</button>
-                  </div>
-                  <ul className="space-y-2">
-                    {(editing.gallery || []).map((url, idx) => (
-                      <li key={idx} className="flex items-center justify-between bg-slate-50 p-2 rounded-lg border">
-                        <div className="flex items-center gap-2 overflow-hidden">
-                          <img src={url} alt="Gallery thumb" className="w-8 h-8 object-cover rounded" />
-                          <span className="text-xs truncate">{url}</span>
-                        </div>
-                        <button onClick={() => removeItem('gallery', idx)} className="text-red-500 hover:bg-red-50 p-1 rounded"><X size={14} /></button>
-                      </li>
-                    ))}
-                  </ul>
+                <section className="col-span-1 md:col-span-2">
+                  <MultiPhotoUploader
+                    label="Tour Photo Gallery"
+                    photos={editing.gallery || []}
+                    onPhotosChange={(updated) => setEditing({ ...editing, gallery: updated })}
+                  />
                 </section>
 
                 {/* Highlights */}

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Save, X, Building as HotelIcon, Image as ImageIcon } from 'lucide-react';
 import type { Hotel } from '../../types';
 import { apiService } from '../../services/api';
+import { SinglePhotoUploader } from '../../components/admin/SinglePhotoUploader';
+import { MultiPhotoUploader } from '../../components/admin/MultiPhotoUploader';
 
 const propertyTypes = [
   'Hotel', 'Resort', 'Homestay', 'Cottage', 'Suite', 
@@ -15,7 +17,6 @@ export const AdminHotels: React.FC = () => {
   const [editing, setEditing] = useState<Hotel | null>(null);
   
   const [newAmenity, setNewAmenity] = useState('');
-  const [newGalleryUrl, setNewGalleryUrl] = useState('');
 
   useEffect(() => {
     fetchHotels();
@@ -24,8 +25,8 @@ export const AdminHotels: React.FC = () => {
   const fetchHotels = async () => {
     try {
       setLoading(true);
-      const data = await (apiService as any).getHotels?.() || [];
-      setHotels(Array.isArray(data) ? data : []);
+      const data = await apiService.getHotels();
+      setHotels(data);
     } catch (err) {
       setError('Failed to fetch hotels');
       console.error(err);
@@ -50,19 +51,17 @@ export const AdminHotels: React.FC = () => {
       isPublished: true
     });
     setNewAmenity('');
-    setNewGalleryUrl('');
   };
 
   const handleEdit = (hotel: Hotel) => {
     setEditing({ ...hotel });
     setNewAmenity('');
-    setNewGalleryUrl('');
   };
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this property?')) {
       try {
-        await (apiService as any).deleteHotel?.(id);
+        await apiService.deleteHotel(id);
         setHotels(hotels.filter(h => h.id !== id));
       } catch (err) {
         alert('Failed to delete property');
@@ -75,14 +74,13 @@ export const AdminHotels: React.FC = () => {
     if (!editing) return;
     
     try {
-      if (hotels.find(h => h.id === editing.id)) {
-        await (apiService as any).updateHotel?.(editing.id, editing);
-        setHotels(hotels.map(h => h.id === editing.id ? editing : h));
-      } else {
-        await (apiService as any).createHotel?.(editing);
-        setHotels([...hotels, editing]);
-      }
+      const hotelToSave: Hotel = {
+        ...editing,
+        id: editing.id || 'stay-' + Date.now()
+      };
+      await apiService.saveHotel(hotelToSave);
       setEditing(null);
+      await fetchHotels();
     } catch (err) {
       alert('Failed to save property');
     }
@@ -102,22 +100,6 @@ export const AdminHotels: React.FC = () => {
     const updated = [...(editing.amenities || [])];
     updated.splice(index, 1);
     setEditing({ ...editing, amenities: updated });
-  };
-
-  const addGalleryUrl = () => {
-    if (!newGalleryUrl.trim() || !editing) return;
-    setEditing({
-      ...editing,
-      gallery: [...(editing.gallery || []), newGalleryUrl.trim()]
-    });
-    setNewGalleryUrl('');
-  };
-
-  const removeGalleryUrl = (index: number) => {
-    if (!editing) return;
-    const updated = [...(editing.gallery || [])];
-    updated.splice(index, 1);
-    setEditing({ ...editing, gallery: updated });
   };
 
   if (loading) return <div className="p-6 text-slate-500 font-bold">Loading properties...</div>;
@@ -294,23 +276,14 @@ export const AdminHotels: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-extrabold tracking-wider text-gray-700 uppercase mb-2">Main Image URL *</label>
-                <div className="flex gap-4 items-start">
-                  <div className="flex-1">
-                    <input
-                      type="url"
-                      required
-                      value={editing.image}
-                      onChange={e => setEditing({ ...editing, image: e.target.value })}
-                      className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#15803d]/20 focus:border-[#15803d]"
-                    />
-                  </div>
-                  {editing.image && (
-                    <div className="w-16 h-16 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200">
-                      <img src={editing.image} alt="Preview" className="w-full h-full object-cover" />
-                    </div>
-                  )}
-                </div>
+                <SinglePhotoUploader
+                  label="Hotel / Room Main Image"
+                  currentImage={editing.image}
+                  aspectHint="Landscape (16:9 or 3:2 recommended)"
+                  onImageSelected={(url) => setEditing({ ...editing, image: url })}
+                  onRemove={() => setEditing({ ...editing, image: '' })}
+                  required
+                />
               </div>
 
               <div>
@@ -350,40 +323,11 @@ export const AdminHotels: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-extrabold tracking-wider text-gray-700 uppercase mb-2">Gallery URLs</label>
-                <div className="flex gap-2 mb-3">
-                  <input
-                    type="url"
-                    value={newGalleryUrl}
-                    onChange={e => setNewGalleryUrl(e.target.value)}
-                    placeholder="https://..."
-                    className="flex-1 px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#15803d]/20 focus:border-[#15803d]"
-                    onKeyDown={e => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        addGalleryUrl();
-                      }
-                    }}
-                  />
-                  <button
-                    type="button"
-                    onClick={addGalleryUrl}
-                    className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-sm font-bold hover:bg-slate-200"
-                  >
-                    Add
-                  </button>
-                </div>
-                <div className="space-y-2">
-                  {editing.gallery?.map((url, i) => (
-                    <div key={i} className="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl gap-3">
-                      <img src={url} alt={`Gallery ${i}`} className="w-10 h-10 rounded-lg object-cover bg-white border border-slate-200" />
-                      <span className="text-xs font-bold text-slate-500 truncate flex-1">{url}</span>
-                      <button type="button" onClick={() => removeGalleryUrl(i)} className="text-red-500 hover:text-red-700 p-1">
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
+                <MultiPhotoUploader
+                  label="Hotel / Room Photo Gallery"
+                  photos={editing.gallery || []}
+                  onPhotosChange={(updated) => setEditing({ ...editing, gallery: updated })}
+                />
               </div>
 
               <div className="flex items-center gap-3">

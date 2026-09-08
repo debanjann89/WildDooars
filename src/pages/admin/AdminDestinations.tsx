@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, X, Image as ImageIcon, Check } from 'lucide-react';
 import type { Destination } from '../../types';
 import { apiService } from '../../services/api';
+import { SinglePhotoUploader } from '../../components/admin/SinglePhotoUploader';
+import { MultiPhotoUploader } from '../../components/admin/MultiPhotoUploader';
 
 export const AdminDestinations: React.FC = () => {
   const [destinations, setDestinations] = useState<Destination[]>([]);
@@ -12,7 +14,6 @@ export const AdminDestinations: React.FC = () => {
   const [editing, setEditing] = useState<Destination | null>(null);
   
   // Helper states for lists
-  const [newGalleryUrl, setNewGalleryUrl] = useState('');
   const [newAttraction, setNewAttraction] = useState('');
   const [newActivity, setNewActivity] = useState('');
 
@@ -72,7 +73,6 @@ export const AdminDestinations: React.FC = () => {
       isFeatured: true,
       isPublished: true,
     });
-    setNewGalleryUrl('');
     setNewAttraction('');
     setNewActivity('');
   };
@@ -88,19 +88,6 @@ export const AdminDestinations: React.FC = () => {
   };
 
   // List Handlers
-  const addGalleryImage = () => {
-    if (!newGalleryUrl.trim() || !editing) return;
-    setEditing({ ...editing, gallery: [...(editing.gallery || []), newGalleryUrl.trim()] });
-    setNewGalleryUrl('');
-  };
-
-  const removeGalleryImage = (index: number) => {
-    if (!editing) return;
-    const updated = [...(editing.gallery || [])];
-    updated.splice(index, 1);
-    setEditing({ ...editing, gallery: updated });
-  };
-
   const addAttraction = () => {
     if (!newAttraction.trim() || !editing) return;
     setEditing({ ...editing, attractions: [...(editing.attractions || []), newAttraction.trim()] });
@@ -261,62 +248,22 @@ export const AdminDestinations: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">
-                  Main Image URL
-                </label>
-                <div className="flex gap-4">
-                  <div className="w-16 h-16 bg-slate-100 rounded-xl flex-shrink-0 overflow-hidden border border-slate-200 flex items-center justify-center">
-                    {editing.mainImage ? (
-                      <img src={editing.mainImage} alt="Main" className="w-full h-full object-cover" />
-                    ) : (
-                      <ImageIcon className="text-slate-300" size={24} />
-                    )}
-                  </div>
-                  <input
-                    type="text"
-                    value={editing.mainImage}
-                    onChange={(e) => setEditing({ ...editing, mainImage: e.target.value })}
-                    className="flex-1 px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#15803d]/20 focus:border-[#15803d] outline-none text-sm font-bold self-start"
-                  />
-                </div>
+                <SinglePhotoUploader
+                  label="Destination Hero Image"
+                  currentImage={editing.mainImage}
+                  aspectHint="Landscape (16:9 recommended)"
+                  onImageSelected={(url) => setEditing({ ...editing, mainImage: url })}
+                  onRemove={() => setEditing({ ...editing, mainImage: '' })}
+                />
               </div>
 
               {/* Gallery */}
               <div>
-                <label className="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">
-                  Gallery Images
-                </label>
-                <div className="flex gap-2 mb-3">
-                  <input
-                    type="text"
-                    value={newGalleryUrl}
-                    onChange={(e) => setNewGalleryUrl(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addGalleryImage())}
-                    placeholder="Add image URL..."
-                    className="flex-1 px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#15803d]/20 focus:border-[#15803d] outline-none text-sm"
-                  />
-                  <button
-                    onClick={addGalleryImage}
-                    className="px-4 py-2 bg-slate-800 text-white rounded-xl hover:bg-slate-700 text-sm font-bold transition-colors"
-                  >
-                    Add
-                  </button>
-                </div>
-                {editing.gallery && editing.gallery.length > 0 && (
-                  <div className="flex flex-wrap gap-3">
-                    {editing.gallery.map((url, i) => (
-                      <div key={i} className="relative group w-20 h-20 rounded-xl overflow-hidden border border-slate-200 bg-slate-100">
-                        <img src={url} alt={`Gallery ${i}`} className="w-full h-full object-cover" />
-                        <button
-                          onClick={() => removeGalleryImage(i)}
-                          className="absolute inset-0 bg-black/50 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"
-                        >
-                          <X size={20} />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <MultiPhotoUploader
+                  label="Destination Photo Gallery"
+                  photos={editing.gallery || []}
+                  onPhotosChange={(updated) => setEditing({ ...editing, gallery: updated })}
+                />
               </div>
 
               {/* Attractions */}

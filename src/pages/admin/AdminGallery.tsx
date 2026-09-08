@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Plus, Edit2, Trash2, Save, X, Image as ImageIcon } from 'lucide-react';
 import { apiService } from '../../services/api';
 import type { GalleryPhoto } from '../../services/api';
+import { SinglePhotoUploader } from '../../components/admin/SinglePhotoUploader';
 
 const categoryOptions = [
   { value: 'forest', label: 'Forest & Landscapes' },
@@ -117,28 +118,14 @@ export const AdminGallery: React.FC = () => {
 
             <form onSubmit={handleSave} className="space-y-4 text-xs">
               <div>
-                <label className="block font-bold text-stone-700 uppercase mb-1">Image URL / Path *</label>
-                <input
-                  type="text"
+                <SinglePhotoUploader
+                  label="Gallery Photo"
+                  currentImage={editing.src}
+                  onImageSelected={(url) => setEditing({ ...editing, src: url })}
+                  onRemove={() => setEditing({ ...editing, src: '' })}
                   required
-                  value={editing.src}
-                  onChange={(e) => setEditing({ ...editing, src: e.target.value })}
-                  className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-sm font-mono"
-                  placeholder="/images/gallery/photo.jpg"
                 />
               </div>
-
-              {/* Preview */}
-              {editing.src && (
-                <div className="rounded-xl overflow-hidden border border-stone-200 bg-stone-50">
-                  <img
-                    src={editing.src}
-                    alt={editing.alt || 'Preview'}
-                    className="w-full h-40 object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  />
-                </div>
-              )}
 
               <div>
                 <label className="block font-bold text-stone-700 uppercase mb-1">Alt Text / Caption *</label>

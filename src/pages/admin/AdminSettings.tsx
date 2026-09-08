@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Save, CheckCircle2 } from 'lucide-react';
 import { apiService } from '../../services/api';
 import type { BusinessSettings } from '../../types';
+import { SinglePhotoUploader } from '../../components/admin/SinglePhotoUploader';
 
 export const AdminSettings: React.FC = () => {
   const [settings, setSettings] = useState<BusinessSettings | null>(null);
@@ -184,12 +185,12 @@ export const AdminSettings: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block font-bold text-slate-700 uppercase mb-1">Hero Image URL</label>
-              <input
-                type="text"
-                value={settings.heroImage}
-                onChange={(e) => setSettings({ ...settings, heroImage: e.target.value })}
-                className="w-full p-3 bg-emerald-50/50 border border-emerald-200 rounded-xl text-sm font-mono text-slate-900"
+              <SinglePhotoUploader
+                label="Homepage Hero Image"
+                currentImage={settings.heroImage}
+                aspectHint="Panoramic Landscape (16:9 or 21:9 recommended)"
+                onImageSelected={(url) => setSettings({ ...settings, heroImage: url })}
+                onRemove={() => setSettings({ ...settings, heroImage: '' })}
               />
             </div>
           </div>

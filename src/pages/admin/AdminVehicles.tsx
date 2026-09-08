@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Plus, Edit2, Trash2, Save, X, Car } from 'lucide-react';
 import { apiService } from '../../services/api';
 import type { Vehicle } from '../../types';
+import { SinglePhotoUploader } from '../../components/admin/SinglePhotoUploader';
 
 export const AdminVehicles: React.FC = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -394,35 +395,15 @@ export const AdminVehicles: React.FC = () => {
                 </div>
               </div>
 
-              {/* Field 6: Image URL with Preview Thumbnail */}
+              {/* Field 6: Vehicle Photo */}
               <div>
-                <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5">
-                  Image URL
-                </label>
-                <div className="flex items-center gap-3">
-                  <input
-                    type="text"
-                    placeholder="https://images.unsplash.com/..."
-                    value={editingVehicle.image || ''}
-                    onChange={(e) => setEditingVehicle({ ...editingVehicle, image: e.target.value })}
-                    className="flex-1 px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 font-mono focus:outline-none focus:ring-2 focus:ring-[#15803d] focus:border-transparent transition-all"
-                  />
-                  <div className="w-12 h-12 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 shrink-0 flex items-center justify-center">
-                    {editingVehicle.image ? (
-                      <img
-                        src={editingVehicle.image}
-                        alt="Preview"
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src =
-                            'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=400&q=80';
-                        }}
-                      />
-                    ) : (
-                      <Car className="w-5 h-5 text-slate-400" />
-                    )}
-                  </div>
-                </div>
+                <SinglePhotoUploader
+                  label="Vehicle Photo"
+                  currentImage={editingVehicle.image}
+                  aspectHint="Landscape (4:3 or 16:9 recommended)"
+                  onImageSelected={(url) => setEditingVehicle({ ...editingVehicle, image: url })}
+                  onRemove={() => setEditingVehicle({ ...editingVehicle, image: '' })}
+                />
               </div>
 
               {/* Field 7: Published Toggle */}
