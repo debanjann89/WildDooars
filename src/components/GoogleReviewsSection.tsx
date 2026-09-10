@@ -64,19 +64,27 @@ export const GoogleReviewsSection: React.FC<GoogleReviewsSectionProps> = ({ sett
   const mapsUrl = settings?.googleMapsUrl || 'https://maps.app.goo.gl/BKCtmveG53u8TuVn6';
   const ratingScore = settings?.googleRating ? settings.googleRating.replace(/[^0-9.]/g, '') : '4.8';
   const reviewsCountText = settings?.reviewsCount || '97+ Google Reviews';
-  const widgetId = settings?.googleReviewsWidgetId?.trim();
+  const widgetId = settings?.googleReviewsWidgetId?.trim() || '5fd3fd64-4120-4944-aaec-dc354e139523';
 
-  // If client configured an Elfsight widget ID, load Elfsight platform script
+  // Ensure Elfsight platform script is present and trigger scan for SPA route navigation
   useEffect(() => {
     if (!widgetId) return;
 
-    // Check if script already injected
-    if (!document.querySelector('script[src*="elfsight.com/platform/platform.js"]')) {
+    if (!document.querySelector('script[src*="platform.js"]')) {
       const script = document.createElement('script');
-      script.src = 'https://static.elfsight.com/platform/platform.js';
+      script.src = 'https://elfsightcdn.com/platform.js';
       script.async = true;
       document.body.appendChild(script);
     }
+
+    // Give DOM a tick to mount the div, then request Elfsight to scan
+    const timer = setTimeout(() => {
+      if (typeof window !== 'undefined' && (window as any).elfsightPlatform && typeof (window as any).elfsightPlatform.load === 'function') {
+        (window as any).elfsightPlatform.load();
+      }
+    }, 200);
+
+    return () => clearTimeout(timer);
   }, [widgetId]);
 
   return (

@@ -12,6 +12,7 @@ export const initialSettings: BusinessSettings = {
   googleRating: '4.8 ★',
   reviewsCount: '97 reviews',
   googleMapsUrl: 'https://maps.app.goo.gl/BKCtmveG53u8TuVn6',
+  googleReviewsWidgetId: '5fd3fd64-4120-4944-aaec-dc354e139523',
   facebookUrl: 'https://www.facebook.com/wilddooarstours',
   heroHeadline: 'Explore the Wild Heart of Dooars',
   heroSubheadline: 'Wildlife, forests, rivers and unforgettable journeys — planned around your travel experience.',

@@ -18,6 +18,8 @@ INSERT INTO settings (setting_key, setting_value) VALUES
 ('plusCode', 'J7F5+25 Badaitari, West Bengal'),
 ('googleRating', '4.8 ★'),
 ('reviewsCount', '97 reviews'),
+('googleMapsUrl', 'https://maps.app.goo.gl/BKCtmveG53u8TuVn6'),
+('googleReviewsWidgetId', '5fd3fd64-4120-4944-aaec-dc354e139523'),
 ('heroHeadline', 'Explore the Wild Heart of Dooars'),
 ('heroSubheadline', 'Wildlife, forests, rivers and unforgettable journeys — planned around your travel experience.'),
 ('heroImage', 'https://images.unsplash.com/photo-1547970810-dc0eac25ee85?auto=format&fit=crop&w=1920&q=80')
