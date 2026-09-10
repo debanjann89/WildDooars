@@ -7,6 +7,7 @@ import { DestinationExplorer } from '../components/DestinationExplorer';
 import { PickupDropSection } from '../components/PickupDropSection';
 import { LatestVehiclesSection } from '../components/LatestVehiclesSection';
 import { AboutBookingSection } from '../components/AboutBookingSection';
+import { GoogleReviewsSection } from '../components/GoogleReviewsSection';
 import { QuestionsSupportStrip } from '../components/QuestionsSupportStrip';
 import { FAQSection } from '../components/FAQSection';
 import type { Package, Destination, Vehicle, Hotel, SafariInfo, BusinessSettings } from '../types';
@@ -54,10 +55,13 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* 8. About Wild Dooars & Quick Booking Widget */}
       <AboutBookingSection settings={settings || undefined} onOpenEnquiry={onOpenEnquiry} />
 
-      {/* 9. Questions Support Strip */}
+      {/* 9. Verified Google Business Reviews */}
+      <GoogleReviewsSection settings={settings || undefined} />
+
+      {/* 10. Questions Support Strip */}
       <QuestionsSupportStrip settings={settings || undefined} />
 
-      {/* 10. Frequently Asked Questions */}
+      {/* 11. Frequently Asked Questions */}
       <FAQSection />
     </div>
   );

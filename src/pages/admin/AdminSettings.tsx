@@ -136,9 +136,9 @@ export const AdminSettings: React.FC = () => {
         {/* Google Rating Info */}
         <div>
           <h2 className="text-base font-extrabold text-slate-900 uppercase tracking-tight mb-4 pb-2 border-b border-emerald-100">
-            Google Maps Rating
+            Google Maps & Live Reviews
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="block font-bold text-slate-700 uppercase mb-1">Google Rating Display</label>
               <input
@@ -156,6 +156,33 @@ export const AdminSettings: React.FC = () => {
                 onChange={(e) => setSettings({ ...settings, reviewsCount: e.target.value })}
                 className="w-full p-3 bg-emerald-50/50 border border-emerald-200 rounded-xl text-sm text-slate-900"
               />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block font-bold text-slate-700 uppercase mb-1">Google Maps Profile URL</label>
+              <input
+                type="text"
+                placeholder="https://maps.app.goo.gl/..."
+                value={settings.googleMapsUrl || ''}
+                onChange={(e) => setSettings({ ...settings, googleMapsUrl: e.target.value })}
+                className="w-full p-3 bg-emerald-50/50 border border-emerald-200 rounded-xl text-sm font-mono text-slate-900"
+              />
+            </div>
+            <div>
+              <label className="block font-bold text-slate-700 uppercase mb-1">
+                Elfsight / Live Review Widget ID (Optional)
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. 1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+                value={settings.googleReviewsWidgetId || ''}
+                onChange={(e) => setSettings({ ...settings, googleReviewsWidgetId: e.target.value })}
+                className="w-full p-3 bg-emerald-50/50 border border-emerald-200 rounded-xl text-sm font-mono text-slate-900"
+              />
+              <span className="text-[10px] text-stone-500 mt-1 block">
+                Paste your Elfsight widget ID here to embed live auto-syncing Google reviews on the homepage.
+              </span>
             </div>
           </div>
         </div>

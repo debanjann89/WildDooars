@@ -112,6 +112,7 @@ export interface BusinessSettings {
   googleRating: string;
   reviewsCount: string;
   googleMapsUrl?: string;
+  googleReviewsWidgetId?: string;
   facebookUrl?: string;
   instagramUrl?: string;
   youtubeUrl?: string;
