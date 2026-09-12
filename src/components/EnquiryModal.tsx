@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Send, Calendar, MapPin, Phone, User, CheckCircle2, ShieldCheck, MessageCircle } from 'lucide-react';
+import { X, Send, Calendar, MapPin, Phone, User, CheckCircle2, ShieldCheck, MessageCircle, Mail } from 'lucide-react';
 import { apiService } from '../services/api';
 import type { BusinessSettings } from '../types';
 
@@ -56,8 +56,13 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone) {
-      setErrorMessage('Please enter your name and phone number.');
+    if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
+      setErrorMessage('Please enter your name, phone number, and email address.');
+      return;
+    }
+
+    if (!formData.email.includes('@') || !formData.email.includes('.')) {
+      setErrorMessage('Please enter a valid email address.');
       return;
     }
 
@@ -201,6 +206,26 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
                   </div>
                 </div>
 
+                {/* Email Address */}
+                <div>
+                  <label className="block text-[11px] font-extrabold text-slate-900 uppercase tracking-wider mb-1">
+                    Email Address *
+                  </label>
+                  <div className="relative">
+                    <Mail className="w-3.5 h-3.5 text-[#15803d] absolute left-3 top-3" />
+                    <input
+                      type="email"
+                      required
+                      placeholder="e.g. name@gmail.com"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full pl-8 pr-2.5 py-2 bg-emerald-50/50 border border-emerald-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-[#15803d]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {/* Trip Type */}
                 <div>
                   <label className="block text-[11px] font-extrabold text-slate-900 uppercase tracking-wider mb-1">
@@ -221,22 +246,22 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
                     <option value="Car Rental">Car Rental</option>
                   </select>
                 </div>
-              </div>
 
-              {/* Destination */}
-              <div>
-                <label className="block text-[11px] font-extrabold text-slate-900 uppercase tracking-wider mb-1">
-                  Preferred Destination / Places
-                </label>
-                <div className="relative">
-                  <MapPin className="w-3.5 h-3.5 text-[#15803d] absolute left-3 top-3" />
-                  <input
-                    type="text"
-                    placeholder="e.g. Jaldapara, Buxa Tiger Reserve"
-                    value={formData.destination}
-                    onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
-                    className="w-full pl-8 pr-2.5 py-2 bg-emerald-50/50 border border-emerald-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-[#15803d]"
-                  />
+                {/* Destination */}
+                <div>
+                  <label className="block text-[11px] font-extrabold text-slate-900 uppercase tracking-wider mb-1">
+                    Preferred Destination
+                  </label>
+                  <div className="relative">
+                    <MapPin className="w-3.5 h-3.5 text-[#15803d] absolute left-3 top-3" />
+                    <input
+                      type="text"
+                      placeholder="e.g. Jaldapara, Buxa"
+                      value={formData.destination}
+                      onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+                      className="w-full pl-8 pr-2.5 py-2 bg-emerald-50/50 border border-emerald-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-[#15803d]"
+                    />
+                  </div>
                 </div>
               </div>
 

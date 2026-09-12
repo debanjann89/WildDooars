@@ -5,9 +5,9 @@ require_once '../../config/mailer.php';
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-if (!$input || empty($input['name']) || empty($input['phone'])) {
+if (!$input || empty($input['name']) || empty($input['phone']) || empty($input['email'])) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Name and phone number are required.']);
+    echo json_encode(['success' => false, 'message' => 'Name, phone number, and email address are required.']);
     exit();
 }
 

@@ -25,8 +25,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone) {
-      setErrorMessage('Please enter your name and phone number.');
+    if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
+      setErrorMessage('Please enter your name, phone number, and email address.');
+      return;
+    }
+
+    if (!formData.email.includes('@') || !formData.email.includes('.')) {
+      setErrorMessage('Please enter a valid email address.');
       return;
     }
 
@@ -277,10 +282,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-1">
-                      Email Address (Optional)
+                      Email Address *
                     </label>
                     <input
                       type="email"
+                      required
                       placeholder="name@example.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
