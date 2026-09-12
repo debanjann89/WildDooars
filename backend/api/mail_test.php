@@ -1,6 +1,6 @@
 <?php
-require_once '../../config/cors.php';
-require_once '../../config/mailer.php';
+require_once __DIR__ . '/../config/cors.php';
+require_once __DIR__ . '/../config/mailer.php';
 
 header('Content-Type: application/json; charset=utf-8');
 

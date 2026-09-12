@@ -7,8 +7,8 @@ class Mailer {
     public static $smtp_port = 465; // SSL port
     public static $smtp_user = "wilddooarstoursandtravels@gmail.com";
 
-    // 2. Google 16-Character App Password (e.g. "abcd efgh ijkl mnop")
-    public static $smtp_pass = ""; 
+    // 2. Google 16-Character App Password
+    public static $smtp_pass = "navz qjhd ukab lmez"; 
 
     // Admin recipient
     public static $admin_email = "wilddooarstoursandtravels@gmail.com";
