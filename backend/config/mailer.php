@@ -1,22 +1,38 @@
 <?php
-// Wild Dooars Email Notification Service
+// Wild Dooars Email Notification Service (Gmail SMTP + Fallback)
 
 class Mailer {
-    // Admin notification recipient
-    public static $admin_email = "wilddooarstoursandtravels@gmail.com";
+    // 1. Gmail SMTP Settings
+    public static $smtp_host = "smtp.gmail.com";
+    public static $smtp_port = 465; // SSL port
+    public static $smtp_user = "wilddooarstoursandtravels@gmail.com";
 
-    // From email (must use domain for Hostinger mail servers)
-    public static $from_email = "no-reply@wilddooarstoursandtravels.in";
+    // 2. Google 16-Character App Password (e.g. "abcd efgh ijkl mnop")
+    public static $smtp_pass = ""; 
+
+    // Admin recipient
+    public static $admin_email = "wilddooarstoursandtravels@gmail.com";
     public static $from_name = "Wild Dooars Tours & Travels";
 
     /**
-     * Send email using standard PHP mail() with proper MIME headers
+     * Send email via Gmail SMTP or fallback to PHP mail()
      */
     public static function sendMail($to, $subject, $htmlBody, $replyTo = null) {
+        $pass = getenv('GMAIL_APP_PASSWORD') ?: self::$smtp_pass;
+        $pass = trim(str_replace(' ', '', $pass));
+
+        // If Google App Password is configured, use secure Gmail SMTP
+        if (!empty($pass)) {
+            $sent = self::sendSmtp($to, $subject, $htmlBody, $replyTo, $pass);
+            if ($sent) return true;
+        }
+
+        // Fallback to PHP mail()
+        $fromEmail = !empty(self::$smtp_user) ? self::$smtp_user : "no-reply@wilddooarstoursandtravels.in";
         $headers = [];
         $headers[] = "MIME-Version: 1.0";
         $headers[] = "Content-Type: text/html; charset=UTF-8";
-        $headers[] = "From: " . self::$from_name . " <" . self::$from_email . ">";
+        $headers[] = "From: " . self::$from_name . " <" . $fromEmail . ">";
         
         if ($replyTo) {
             $headers[] = "Reply-To: " . $replyTo;
@@ -25,11 +41,93 @@ class Mailer {
         }
         
         $headers[] = "X-Mailer: PHP/" . phpversion();
-
         $headerStr = implode("\r\n", $headers);
 
-        // Attempt sending
         return @mail($to, $subject, $htmlBody, $headerStr);
+    }
+
+    /**
+     * Direct Gmail SSL Socket SMTP Client (No Composer needed)
+     */
+    public static function sendSmtp($to, $subject, $htmlBody, $replyTo, $appPassword) {
+        $timeout = 15;
+        $context = stream_context_create([
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            ]
+        ]);
+
+        $socket = @stream_socket_client(
+            "ssl://" . self::$smtp_host . ":" . self::$smtp_port,
+            $errno,
+            $errstr,
+            $timeout,
+            STREAM_CLIENT_CONNECT,
+            $context
+        );
+
+        if (!$socket) {
+            return false;
+        }
+
+        $read = function($sock) {
+            $data = "";
+            while ($line = fgets($sock, 512)) {
+                $data .= $line;
+                if (substr($line, 3, 1) === " ") break;
+            }
+            return $data;
+        };
+
+        $cmd = function($sock, $command) use ($read) {
+            fputs($sock, $command . "\r\n");
+            return $read($sock);
+        };
+
+        $resp = $read($socket);
+        if (substr($resp, 0, 3) !== "220") { fclose($socket); return false; }
+
+        $resp = $cmd($socket, "EHLO " . (gethostname() ?: 'localhost'));
+        if (substr($resp, 0, 3) !== "250") { fclose($socket); return false; }
+
+        $resp = $cmd($socket, "AUTH LOGIN");
+        if (substr($resp, 0, 3) !== "334") { fclose($socket); return false; }
+
+        $resp = $cmd($socket, base64_encode(self::$smtp_user));
+        if (substr($resp, 0, 3) !== "334") { fclose($socket); return false; }
+
+        $resp = $cmd($socket, base64_encode($appPassword));
+        if (substr($resp, 0, 3) !== "235") { fclose($socket); return false; }
+
+        $resp = $cmd($socket, "MAIL FROM: <" . self::$smtp_user . ">");
+        if (substr($resp, 0, 3) !== "250") { fclose($socket); return false; }
+
+        $resp = $cmd($socket, "RCPT TO: <" . $to . ">");
+        if (substr($resp, 0, 3) !== "250") { fclose($socket); return false; }
+
+        $resp = $cmd($socket, "DATA");
+        if (substr($resp, 0, 3) !== "354") { fclose($socket); return false; }
+
+        $headers = [];
+        $headers[] = "MIME-Version: 1.0";
+        $headers[] = "Content-Type: text/html; charset=UTF-8";
+        $headers[] = "From: " . self::$from_name . " <" . self::$smtp_user . ">";
+        $headers[] = "To: <" . $to . ">";
+        $headers[] = "Subject: =?UTF-8?B?" . base64_encode($subject) . "?=";
+        $headers[] = "Date: " . date('r');
+        if ($replyTo) {
+            $headers[] = "Reply-To: " . $replyTo;
+        }
+
+        $data = implode("\r\n", $headers) . "\r\n\r\n" . $htmlBody . "\r\n.";
+        $resp = $cmd($socket, $data);
+        if (substr($resp, 0, 3) !== "250") { fclose($socket); return false; }
+
+        $cmd($socket, "QUIT");
+        fclose($socket);
+        return true;
     }
 
     /**
