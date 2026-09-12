@@ -185,6 +185,29 @@ export const AdminSettings: React.FC = () => {
               </span>
             </div>
           </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block font-bold text-slate-700 uppercase mb-1">Facebook Page URL</label>
+              <input
+                type="text"
+                placeholder="https://www.facebook.com/..."
+                value={settings.facebookUrl || ''}
+                onChange={(e) => setSettings({ ...settings, facebookUrl: e.target.value })}
+                className="w-full p-3 bg-emerald-50/50 border border-emerald-200 rounded-xl text-sm font-mono text-slate-900"
+              />
+            </div>
+            <div>
+              <label className="block font-bold text-slate-700 uppercase mb-1">Instagram Profile URL</label>
+              <input
+                type="text"
+                placeholder="https://www.instagram.com/..."
+                value={settings.instagramUrl || ''}
+                onChange={(e) => setSettings({ ...settings, instagramUrl: e.target.value })}
+                className="w-full p-3 bg-emerald-50/50 border border-emerald-200 rounded-xl text-sm font-mono text-slate-900"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Homepage Hero Section */}
