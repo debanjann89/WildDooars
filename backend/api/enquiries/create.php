@@ -1,6 +1,7 @@
 <?php
 require_once '../../config/cors.php';
 require_once '../../config/database.php';
+require_once '../../config/mailer.php';
 
 $input = json_decode(file_get_contents('php://input'), true);
 
@@ -34,8 +35,22 @@ if ($db) {
     ]);
 }
 
+// Send automated email notifications:
+// 1. Notify Wild Dooars team (wilddooarstoursandtravels@gmail.com)
+$adminMailSent = Mailer::sendAdminNotification($input);
+
+// 2. Send instant confirmation receipt to customer (if email provided)
+$customerMailSent = false;
+if (!empty($input['email'])) {
+    $customerMailSent = Mailer::sendCustomerConfirmation($input);
+}
+
 echo json_encode([
     'success' => true,
-    'message' => 'Thank you! Your enquiry has been received. Our travel team will contact you shortly.'
+    'message' => 'Thank you! Your enquiry has been received. Our travel team will contact you shortly.',
+    'mail_sent' => [
+        'admin' => $adminMailSent,
+        'customer' => $customerMailSent
+    ]
 ]);
 ?>
