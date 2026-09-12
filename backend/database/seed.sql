@@ -1,6 +1,5 @@
 -- Seed Data for Wild Dooars Tours & Travels Database
-
-USE wild_dooars;
+-- USE wild_dooars;
 
 -- Default Admin User (admin@wilddooars.com / WildDooars@2026)
 INSERT INTO admins (username, email, password_hash, role) VALUES
