@@ -6,14 +6,14 @@ class Database {
     // 1. Hostinger MySQL Host (Almost always 'localhost')
     private $host = "localhost";
 
-    // 2. Your Hostinger Database Name (e.g. u123456789_wilddooars)
-    private $db_name = "wild_dooars";
+    // 2. Your Hostinger Database Name
+    private $db_name = "u688253332_wilddooars";
 
-    // 3. Your Hostinger Database Username (e.g. u123456789_admin)
-    private $username = "root";
+    // 3. Your Hostinger Database Username
+    private $username = "u688253332_wilddooars2026";
 
     // 4. Your Hostinger Database Password
-    private $password = "";
+    private $password = "#Wilddooars@2026";
 
     public $conn;
     public $last_error = null;
