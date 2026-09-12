@@ -25,7 +25,7 @@ const STORAGE_KEYS = {
   LOCKOUT_UNTIL: 'wd_lockout_until'
 };
 
-const DATA_VERSION_KEY = 'wd_data_version_v17';
+const DATA_VERSION_KEY = 'wd_data_version_v20';
 
 // Session timeout: 8 hours in milliseconds
 const SESSION_TIMEOUT_MS = 8 * 60 * 60 * 1000;
@@ -113,7 +113,14 @@ async function fetchWithFallback<T>(url: string, storageKey: string, defaultData
 export const apiService = {
   // SETTINGS
   async getSettings(): Promise<BusinessSettings> {
-    return fetchWithFallback<BusinessSettings>('/api/settings/get.php', STORAGE_KEYS.SETTINGS, initialSettings);
+    const s = await fetchWithFallback<BusinessSettings>('/api/settings/get.php', STORAGE_KEYS.SETTINGS, initialSettings);
+    return {
+      ...initialSettings,
+      ...s,
+      email: s?.email || initialSettings.email,
+      facebookUrl: s?.facebookUrl || initialSettings.facebookUrl,
+      instagramUrl: s?.instagramUrl || initialSettings.instagramUrl,
+    };
   },
 
   async updateSettings(settings: BusinessSettings): Promise<boolean> {
