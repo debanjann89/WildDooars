@@ -1,8 +1,23 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+
+  # Serve index.html as-is
   RewriteRule ^index\.html$ - [L]
+
+  # NEVER rewrite PHP API, config, or database paths — let Apache handle them directly
+  RewriteRule ^api/ - [L]
+  RewriteRule ^config/ - [L]
+  RewriteRule ^database/ - [L]
+  RewriteRule \.php$ - [L]
+
+  # SPA fallback: everything else that isn't a real file/dir → index.html
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L]
+</IfModule>
+
+# Ensure PHP files are executed, not downloaded (Hostinger compatibility)
+<IfModule mod_mime.c>
+  AddType application/x-httpd-php .php
 </IfModule>

@@ -50,7 +50,30 @@ class Mailer {
      * Direct Gmail SSL Socket SMTP Client (No Composer needed)
      */
     public static function sendSmtp($to, $subject, $htmlBody, $replyTo, $appPassword) {
+        // Try SSL on port 465 first, then STARTTLS on port 587
+        $attempts = [
+            ['proto' => 'ssl', 'port' => 465],
+            ['proto' => 'tcp', 'port' => 587, 'starttls' => true],
+        ];
+
+        foreach ($attempts as $attempt) {
+            $result = self::trySendSmtp($to, $subject, $htmlBody, $replyTo, $appPassword, $attempt);
+            if ($result) return true;
+        }
+
+        error_log("SMTP: All connection attempts failed for recipient: $to");
+        return false;
+    }
+
+    /**
+     * Attempt SMTP send on a specific port/protocol
+     */
+    private static function trySendSmtp($to, $subject, $htmlBody, $replyTo, $appPassword, $config) {
         $timeout = 15;
+        $proto = $config['proto'];
+        $port = $config['port'];
+        $starttls = !empty($config['starttls']);
+
         $context = stream_context_create([
             'ssl' => [
                 'verify_peer' => false,
@@ -60,7 +83,7 @@ class Mailer {
         ]);
 
         $socket = @stream_socket_client(
-            "ssl://" . self::$smtp_host . ":" . self::$smtp_port,
+            "{$proto}://" . self::$smtp_host . ":{$port}",
             $errno,
             $errstr,
             $timeout,
@@ -69,6 +92,7 @@ class Mailer {
         );
 
         if (!$socket) {
+            error_log("SMTP: Failed to connect via {$proto}:{$port} - $errstr ($errno)");
             return false;
         }
 
@@ -91,6 +115,23 @@ class Mailer {
 
         $resp = $cmd($socket, "EHLO " . (gethostname() ?: 'localhost'));
         if (substr($resp, 0, 3) !== "250") { fclose($socket); return false; }
+
+        // If STARTTLS is needed (port 587), upgrade the connection
+        if ($starttls) {
+            $resp = $cmd($socket, "STARTTLS");
+            if (substr($resp, 0, 3) !== "220") { fclose($socket); return false; }
+
+            $crypto = stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT);
+            if (!$crypto) {
+                error_log("SMTP: STARTTLS crypto upgrade failed on port {$port}");
+                fclose($socket);
+                return false;
+            }
+
+            // Re-issue EHLO after STARTTLS
+            $resp = $cmd($socket, "EHLO " . (gethostname() ?: 'localhost'));
+            if (substr($resp, 0, 3) !== "250") { fclose($socket); return false; }
+        }
 
         $resp = $cmd($socket, "AUTH LOGIN");
         if (substr($resp, 0, 3) !== "334") { fclose($socket); return false; }

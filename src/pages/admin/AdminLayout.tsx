@@ -10,6 +10,8 @@ import {
   Inbox,
   Image as ImageIcon,
   Settings,
+  Star,
+  PlusCircle,
   LogOut,
   ExternalLink,
   Menu,
@@ -29,20 +31,26 @@ export const AdminLayout: React.FC = () => {
 
   const navItems = [
     { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
-    { name: 'Packages', path: '/admin/packages', icon: Compass },
+    { name: 'Manage Packages', path: '/admin/packages', icon: Compass },
+    { name: '+ Add Package', path: '/admin/packages?new=true', icon: PlusCircle, isAction: true },
     { name: 'Destinations', path: '/admin/destinations', icon: MapPin },
     { name: 'Safaris', path: '/admin/safaris', icon: Trees },
     { name: 'Vehicles', path: '/admin/vehicles', icon: Car },
     { name: 'Hotels', path: '/admin/hotels', icon: HotelIcon },
     { name: 'Gallery', path: '/admin/gallery', icon: ImageIcon },
     { name: 'Enquiries Inbox', path: '/admin/enquiries', icon: Inbox },
+    { name: 'Reviews', path: '/admin/reviews', icon: Star },
     { name: 'Media Library', path: '/admin/media', icon: ImageIcon },
     { name: 'Website Settings', path: '/admin/settings', icon: Settings },
   ];
 
   const isActive = (path: string) => {
     if (path === '/admin' && location.pathname === '/admin') return true;
-    if (path !== '/admin' && location.pathname.startsWith(path)) return true;
+    if (path.includes('?')) {
+      return (location.pathname + location.search) === path;
+    }
+    if (path !== '/admin' && location.pathname === path && !location.search) return true;
+    if (path !== '/admin' && !path.includes('?') && location.pathname.startsWith(path) && !location.search) return true;
     return false;
   };
 

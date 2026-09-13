@@ -137,3 +137,22 @@ export interface AdminUser {
   email: string;
   role: string;
 }
+
+export interface Review {
+  id: string;
+  name: string;
+  email?: string;
+  location?: string;
+  rating: number;
+  reviewType: 'Package' | 'Experience';
+  packageId?: string;
+  packageName?: string;
+  experienceType?: string;
+  title?: string;
+  comment: string;
+  travelDate?: string;
+  avatarUrl?: string;
+  source: 'Website' | 'Google';
+  status: 'Approved' | 'Pending' | 'Hidden';
+  createdAt: string;
+}

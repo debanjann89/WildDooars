@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import type { Package, ItineraryDay, FAQItem } from '../../types';
 import { apiService } from '../../services/api';
 import { Edit, Trash2, Plus, X, Image as ImageIcon, Save } from 'lucide-react';
@@ -6,6 +7,7 @@ import { SinglePhotoUploader } from '../../components/admin/SinglePhotoUploader'
 import { MultiPhotoUploader } from '../../components/admin/MultiPhotoUploader';
 
 export const AdminPackages: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Partial<Package> | null>(null);
@@ -117,6 +119,13 @@ export const AdminPackages: React.FC = () => {
     setIsModalOpen(true);
   };
 
+  useEffect(() => {
+    if (searchParams.get('new') === 'true') {
+      openNewModal();
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams]);
+
   const openEditModal = (pkg: Package) => {
     setEditing({ ...pkg });
     setNewActivityInputs({});
@@ -223,13 +232,17 @@ export const AdminPackages: React.FC = () => {
 
   return (
     <div className="p-6 bg-slate-50 min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Manage Packages</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <h1 className="text-2xl font-bold font-serif text-emerald-950">Manage Tour Packages</h1>
+          <p className="text-xs text-stone-600">Create, edit, and organize all tour packages displayed on the website.</p>
+        </div>
         <button
           onClick={openNewModal}
-          className="bg-primary hover:bg-green-700 text-white px-4 py-2 rounded-xl flex items-center font-bold"
+          className="bg-emerald-700 hover:bg-emerald-800 text-white px-5 py-2.5 rounded-xl flex items-center gap-2 font-extrabold shadow-sm hover:shadow-md transition text-xs uppercase tracking-wider shrink-0"
         >
-          <Plus size={20} className="mr-2" /> Add Package
+          <Plus size={18} />
+          <span>+ Add Package</span>
         </button>
       </div>
 
@@ -238,7 +251,7 @@ export const AdminPackages: React.FC = () => {
           <div key={pkg.id} className="bg-white rounded-2xl shadow-sm border p-4 flex flex-col">
             <div className="flex items-start justify-between mb-4">
               <div className="flex flex-col">
-                <span className="text-xs font-extrabold text-primary uppercase tracking-wider mb-1">
+                <span className="text-xs font-extrabold text-emerald-700 uppercase tracking-wider mb-1">
                   {pkg.category} • {pkg.duration}
                 </span>
                 <h3 className="text-lg font-bold text-gray-900">{pkg.name}</h3>
@@ -401,7 +414,7 @@ export const AdminPackages: React.FC = () => {
                       placeholder="Highlight"
                       className="flex-1 border rounded-xl px-3 py-2 text-sm"
                     />
-                    <button onClick={() => addItem('highlights', newHighlight, setNewHighlight)} className="bg-primary text-white px-3 py-2 rounded-xl text-sm font-bold">Add</button>
+                    <button onClick={() => addItem('highlights', newHighlight, setNewHighlight)} className="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-sm font-bold transition">Add</button>
                   </div>
                   <ul className="space-y-2">
                     {(editing.highlights || []).map((item, idx) => (
@@ -424,7 +437,7 @@ export const AdminPackages: React.FC = () => {
                       placeholder="Inclusion"
                       className="flex-1 border rounded-xl px-3 py-2 text-sm"
                     />
-                    <button onClick={() => addItem('inclusions', newInclusion, setNewInclusion)} className="bg-primary text-white px-3 py-2 rounded-xl text-sm font-bold">Add</button>
+                    <button onClick={() => addItem('inclusions', newInclusion, setNewInclusion)} className="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-sm font-bold transition">Add</button>
                   </div>
                   <ul className="space-y-2">
                     {(editing.inclusions || []).map((item, idx) => (
@@ -447,7 +460,7 @@ export const AdminPackages: React.FC = () => {
                       placeholder="Exclusion"
                       className="flex-1 border rounded-xl px-3 py-2 text-sm"
                     />
-                    <button onClick={() => addItem('exclusions', newExclusion, setNewExclusion)} className="bg-primary text-white px-3 py-2 rounded-xl text-sm font-bold">Add</button>
+                    <button onClick={() => addItem('exclusions', newExclusion, setNewExclusion)} className="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-sm font-bold transition">Add</button>
                   </div>
                   <ul className="space-y-2">
                     {(editing.exclusions || []).map((item, idx) => (
@@ -470,7 +483,7 @@ export const AdminPackages: React.FC = () => {
                       placeholder="Important Note"
                       className="flex-1 border rounded-xl px-3 py-2 text-sm"
                     />
-                    <button onClick={() => addItem('importantNotes', newNote, setNewNote)} className="bg-primary text-white px-3 py-2 rounded-xl text-sm font-bold">Add</button>
+                    <button onClick={() => addItem('importantNotes', newNote, setNewNote)} className="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-sm font-bold transition">Add</button>
                   </div>
                   <ul className="space-y-2">
                     {(editing.importantNotes || []).map((item, idx) => (
@@ -487,7 +500,7 @@ export const AdminPackages: React.FC = () => {
               <section>
                 <div className="flex justify-between items-center mb-4 border-b pb-2">
                   <h3 className="text-sm font-extrabold text-gray-900 uppercase tracking-wider">Itinerary</h3>
-                  <button onClick={addDay} className="text-primary hover:text-green-700 text-sm font-bold flex items-center">
+                  <button onClick={addDay} className="text-emerald-700 hover:text-emerald-800 text-sm font-bold flex items-center">
                     <Plus size={16} className="mr-1" /> Add Day
                   </button>
                 </div>
@@ -495,7 +508,7 @@ export const AdminPackages: React.FC = () => {
                   {(editing.itinerary || []).map((day, dIdx) => (
                     <div key={dIdx} className="bg-stone-50 border rounded-lg p-3">
                       <div className="flex justify-between items-start mb-2">
-                        <span className="bg-primary text-white text-xs font-bold px-2 py-1 rounded">Day {day.dayNumber}</span>
+                        <span className="bg-emerald-700 text-white text-xs font-bold px-2.5 py-1 rounded-md">Day {day.dayNumber}</span>
                         <button onClick={() => removeDay(dIdx)} className="text-red-500 hover:text-red-700">
                           <Trash2 size={16} />
                         </button>
@@ -529,7 +542,7 @@ export const AdminPackages: React.FC = () => {
                               placeholder="Add activity"
                               className="flex-1 border rounded-xl px-3 py-1 text-sm"
                             />
-                            <button onClick={() => addActivity(dIdx)} className="bg-primary text-white px-2 py-1 rounded-xl text-xs font-bold">Add</button>
+                            <button onClick={() => addActivity(dIdx)} className="bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1 rounded-xl text-xs font-bold transition">Add</button>
                           </div>
                           <div className="flex flex-wrap gap-2">
                             {(day.activities || []).map((act, aIdx) => (
@@ -552,7 +565,7 @@ export const AdminPackages: React.FC = () => {
               <section>
                 <div className="flex justify-between items-center mb-4 border-b pb-2">
                   <h3 className="text-sm font-extrabold text-gray-900 uppercase tracking-wider">FAQs</h3>
-                  <button onClick={addFaq} className="text-primary hover:text-green-700 text-sm font-bold flex items-center">
+                  <button onClick={addFaq} className="text-emerald-700 hover:text-emerald-800 text-sm font-bold flex items-center">
                     <Plus size={16} className="mr-1" /> Add FAQ
                   </button>
                 </div>
@@ -594,7 +607,7 @@ export const AdminPackages: React.FC = () => {
                     type="checkbox"
                     checked={!!editing.isFeatured}
                     onChange={(e) => setEditing({ ...editing, isFeatured: e.target.checked })}
-                    className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
+                    className="w-4 h-4 text-emerald-700 rounded border-gray-300 focus:ring-emerald-600"
                   />
                   <span className="text-sm font-bold text-gray-700">Featured Package</span>
                 </label>
@@ -603,7 +616,7 @@ export const AdminPackages: React.FC = () => {
                     type="checkbox"
                     checked={!!editing.isPublished}
                     onChange={(e) => setEditing({ ...editing, isPublished: e.target.checked })}
-                    className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
+                    className="w-4 h-4 text-emerald-700 rounded border-gray-300 focus:ring-emerald-600"
                   />
                   <span className="text-sm font-bold text-gray-700">Published</span>
                 </label>
@@ -619,7 +632,7 @@ export const AdminPackages: React.FC = () => {
               </button>
               <button
                 onClick={handleSave}
-                className="px-6 py-2 bg-primary text-white rounded-xl font-bold hover:bg-green-700 flex items-center"
+                className="px-6 py-2 bg-emerald-700 text-white rounded-xl font-bold hover:bg-emerald-800 flex items-center shadow-md transition"
               >
                 <Save size={18} className="mr-2" />
                 Save Package

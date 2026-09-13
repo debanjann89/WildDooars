@@ -1,4 +1,4 @@
-import type { Package, Destination, SafariInfo, Vehicle, Hotel, BusinessSettings, Enquiry } from '../types';
+import type { Package, Destination, SafariInfo, Vehicle, Hotel, BusinessSettings, Enquiry, Review } from '../types';
 
 export const initialSettings: BusinessSettings = {
   businessName: 'Wild Dooars Tours & Travels',
@@ -859,5 +859,102 @@ export const initialEnquiries: Enquiry[] = [
     status: 'Contacted',
     createdAt: '2026-08-15 09:15',
     internalNotes: ['Suggested Murti Riverside Haven with romantic room setup.']
+  }
+];
+
+export const initialReviews: Review[] = [
+  {
+    id: 'rev-w1',
+    name: 'Subhashish Roy',
+    email: 'subhashish.roy@gmail.com',
+    location: 'Kolkata, West Bengal',
+    rating: 5,
+    reviewType: 'Package',
+    packageId: 'pkg-wild-dooars-explorer',
+    packageName: 'Wild Dooars Rhino & Jungle Safari Expedition',
+    title: 'Flawless arrangements and unforgettable Rhino sightings!',
+    comment: 'Outstanding experience with Wild Dooars Tours & Travels! Our Jaldapara elephant and jeep safari permits were arranged smoothly without any hassle. The Innova was clean, well-maintained, and our driver had deep knowledge of forest routes and wildlife sightings. Highly recommend for families!',
+    travelDate: 'February 2026',
+    source: 'Website',
+    status: 'Approved',
+    createdAt: '2026-02-18 14:30'
+  },
+  {
+    id: 'rev-w2',
+    name: 'Tanmoy Sarkar',
+    email: 'tanmoy.sarkar88@gmail.com',
+    location: 'Siliguri, West Bengal',
+    rating: 5,
+    reviewType: 'Package',
+    packageId: 'pkg-samsing-jhalong-bindu',
+    packageName: 'Samsing, Jhalong & Bindu Nature Circuit',
+    title: 'Scenic bliss at Rocky Island and Suntalekhola',
+    comment: 'Booked the Samsing, Jhalong, and Bindu tour package. The pickup from Hasimara was right on time. The driver was extremely polite and showed us Rocky Island and the Suntalekhola hanging bridge. Best travel operator in Dooars for offbeat tours!',
+    travelDate: 'January 2026',
+    source: 'Website',
+    status: 'Approved',
+    createdAt: '2026-01-25 11:15'
+  },
+  {
+    id: 'rev-w3',
+    name: 'Rituja Banerjee',
+    email: 'rituja.banerjee@outlook.com',
+    location: 'Durgapur, West Bengal',
+    rating: 5,
+    reviewType: 'Package',
+    packageId: 'pkg-buxa-jayanti-offbeat',
+    packageName: 'Buxa Tiger Reserve & Jayanti Riverbed Adventure',
+    title: 'Peaceful stay near Buxa with great hospitality',
+    comment: 'Very reliable and prompt service near Jaldapara. Excellent coordination for hotel booking and car rental. The resort arrangements were peaceful and close to nature. Sikiyajhora boat safari was the cherry on top!',
+    travelDate: 'December 2025',
+    source: 'Website',
+    status: 'Approved',
+    createdAt: '2025-12-28 16:45'
+  },
+  {
+    id: 'rev-w4',
+    name: 'Amit Sengupta',
+    email: 'amit.sengupta@yahoo.com',
+    location: 'Kolkata, West Bengal',
+    rating: 5,
+    reviewType: 'Experience',
+    experienceType: 'Car Rental & Driver',
+    title: 'Top-notch Innova and skilled hill driver',
+    comment: 'Rented an Innova for 4 days covering Gorumara, Chilapata, and Jaldapara. Car was in top-notch condition, AC worked great, and driver behavior was commendable. Very honest, safe, and professional team.',
+    travelDate: 'November 2025',
+    source: 'Website',
+    status: 'Approved',
+    createdAt: '2025-11-20 18:20'
+  },
+  {
+    id: 'rev-w5',
+    name: 'Sourav & Debalina Paul',
+    email: 'sourav.debalina@gmail.com',
+    location: 'Howrah, West Bengal',
+    rating: 5,
+    reviewType: 'Package',
+    packageId: 'pkg-dooars-honeymoon-retreat',
+    packageName: 'Romantic Dooars Forest & River Retreat',
+    title: 'Magical honeymoon experience amidst Murti river and tea gardens',
+    comment: 'We booked the Romantic Dooars retreat package. The riverside bamboo cottage and candlelit garden dinner were beyond our expectations. Thank you Wild Dooars for making our trip truly special!',
+    travelDate: 'January 2026',
+    source: 'Website',
+    status: 'Approved',
+    createdAt: '2026-01-14 10:00'
+  },
+  {
+    id: 'rev-w6',
+    name: 'Dr. Anirban Mukherjee',
+    email: 'dr.anirban.m@gmail.com',
+    location: 'Guwahati, Assam',
+    rating: 5,
+    reviewType: 'Experience',
+    experienceType: 'Jeep / Elephant Safari',
+    title: 'Early morning Jaldapara elephant ride permit arranged seamlessly',
+    comment: 'Getting elephant safari permits is notorious during peak seasons, but the Wild Dooars team took care of all permits and timing. We saw a mother rhino and baby grazing from close quarters. Exceptional service!',
+    travelDate: 'February 2026',
+    source: 'Website',
+    status: 'Approved',
+    createdAt: '2026-02-04 09:30'
   }
 ];

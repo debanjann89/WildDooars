@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Compass, MapPin, Car, Hotel as HotelIcon, Inbox, Phone, MessageCircle, Trees, Image as ImageIcon } from 'lucide-react';
+import { Compass, MapPin, Car, Hotel as HotelIcon, Inbox, Phone, MessageCircle, Trees, Image as ImageIcon, Star, Plus } from 'lucide-react';
 import { apiService } from '../../services/api';
 import type { Package, Destination, Vehicle, Hotel, SafariInfo, Enquiry } from '../../types';
 import type { GalleryPhoto } from '../../services/api';
@@ -13,17 +13,19 @@ export const AdminDashboard: React.FC = () => {
   const [safaris, setSafaris] = useState<SafariInfo[]>([]);
   const [gallery, setGallery] = useState<GalleryPhoto[]>([]);
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
+  const [reviews, setReviews] = useState<any[]>([]);
 
   useEffect(() => {
     async function loadData() {
-      const [pkgs, dests, vehs, htls, sfrs, glry, enqs] = await Promise.all([
+      const [pkgs, dests, vehs, htls, sfrs, glry, enqs, revs] = await Promise.all([
         apiService.getPackages(),
         apiService.getDestinations(),
         apiService.getVehicles(),
         apiService.getHotels(),
         apiService.getSafaris(),
         apiService.getGallery(),
-        apiService.getEnquiries()
+        apiService.getEnquiries(),
+        apiService.getReviews()
       ]);
 
       setPackages(pkgs);
@@ -33,6 +35,7 @@ export const AdminDashboard: React.FC = () => {
       setSafaris(sfrs);
       setGallery(glry);
       setEnquiries(enqs);
+      setReviews(revs);
     }
     loadData();
   }, []);
@@ -41,6 +44,7 @@ export const AdminDashboard: React.FC = () => {
 
   const kpiCards = [
     { label: 'Packages', count: packages.length, icon: Compass, link: '/admin/packages' },
+    { label: 'Reviews', count: reviews.length, icon: Star, link: '/admin/reviews' },
     { label: 'Destinations', count: destinations.length, icon: MapPin, link: '/admin/destinations' },
     { label: 'Safaris', count: safaris.length, icon: Trees, link: '/admin/safaris' },
     { label: 'Vehicles', count: vehicles.length, icon: Car, link: '/admin/vehicles' },
@@ -88,7 +92,11 @@ export const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+        <Link to="/admin/packages?new=true" className="p-4 bg-emerald-700 text-white rounded-2xl hover:bg-emerald-800 text-center transition-all group shadow-sm">
+          <Plus className="w-6 h-6 text-white mx-auto mb-2 group-hover:scale-110 transition-transform" />
+          <span className="text-xs font-black block">+ Add Package</span>
+        </Link>
         <Link to="/admin/packages" className="p-4 bg-white rounded-2xl border border-stone-200 hover:border-emerald-200 text-center transition-all group">
           <Compass className="w-6 h-6 text-[#15803d] mx-auto mb-2 group-hover:scale-110 transition-transform" />
           <span className="text-xs font-bold text-slate-700 block">Manage Packages</span>

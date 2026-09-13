@@ -1,5 +1,5 @@
-import type { Package, Destination, SafariInfo, Vehicle, Hotel, BusinessSettings, Enquiry } from '../types';
-import { initialSettings, initialDestinations, initialPackages, initialSafaris, initialVehicles, initialHotels, initialEnquiries } from './mockData';
+import type { Package, Destination, SafariInfo, Vehicle, Hotel, BusinessSettings, Enquiry, Review } from '../types';
+import { initialSettings, initialDestinations, initialPackages, initialSafaris, initialVehicles, initialHotels, initialEnquiries, initialReviews } from './mockData';
 
 // Gallery types
 export interface GalleryPhoto {
@@ -17,6 +17,7 @@ const STORAGE_KEYS = {
   VEHICLES: 'wd_vehicles',
   HOTELS: 'wd_hotels',
   ENQUIRIES: 'wd_enquiries',
+  REVIEWS: 'wd_reviews',
   MEDIA: 'wd_media',
   GALLERY: 'wd_gallery',
   AUTH: 'wd_admin_auth',
@@ -25,7 +26,7 @@ const STORAGE_KEYS = {
   LOCKOUT_UNTIL: 'wd_lockout_until'
 };
 
-const DATA_VERSION_KEY = 'wd_data_version_v20';
+const DATA_VERSION_KEY = 'wd_data_version_v21';
 
 // Session timeout: 8 hours in milliseconds
 const SESSION_TIMEOUT_MS = 8 * 60 * 60 * 1000;
@@ -70,11 +71,16 @@ function initializeLocalStorage() {
     localStorage.setItem(STORAGE_KEYS.VEHICLES, JSON.stringify(initialVehicles));
     localStorage.setItem(STORAGE_KEYS.HOTELS, JSON.stringify(initialHotels));
     localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(initialGalleryPhotos));
+    localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(initialReviews));
     localStorage.setItem(DATA_VERSION_KEY, 'synced');
   }
 
   if (!localStorage.getItem(STORAGE_KEYS.ENQUIRIES)) {
     localStorage.setItem(STORAGE_KEYS.ENQUIRIES, JSON.stringify(initialEnquiries));
+  }
+
+  if (!localStorage.getItem(STORAGE_KEYS.REVIEWS)) {
+    localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(initialReviews));
   }
 
   if (!localStorage.getItem(STORAGE_KEYS.GALLERY)) {
@@ -315,14 +321,23 @@ export const apiService = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newEnquiry)
       });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success) return { success: true, message: 'Thank you! Your enquiry has been received. Our travel team will contact you shortly.' };
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        return {
+          success: true,
+          message: data.message || 'Thank you! Your enquiry has been received. Our travel team will contact you shortly.'
+        };
       }
-    } catch {
-      // Local storage fallback
+
+      // API responded but indicated failure — still return success to user
+      // (the enquiry may have been partially saved) but log the issue
+      console.warn('Enquiry API response:', data);
+    } catch (err) {
+      console.warn('Enquiry API unavailable, saving locally:', err);
     }
 
+    // Fallback: save to localStorage so it at least persists in this browser
     const enquiries = await this.getEnquiries();
     enquiries.unshift(newEnquiry);
     localStorage.setItem(STORAGE_KEYS.ENQUIRIES, JSON.stringify(enquiries));
@@ -334,6 +349,7 @@ export const apiService = {
   },
 
   async updateEnquiryStatus(id: string, status: Enquiry['status'], note?: string): Promise<boolean> {
+    // Update localStorage
     const enquiries = await this.getEnquiries();
     const enquiry = enquiries.find(e => e.id === id);
     if (enquiry) {
@@ -343,15 +359,131 @@ export const apiService = {
         enquiry.internalNotes.push(`${new Date().toLocaleTimeString()} - ${note}`);
       }
       localStorage.setItem(STORAGE_KEYS.ENQUIRIES, JSON.stringify(enquiries));
-      return true;
     }
-    return false;
+
+    // Also sync to backend database
+    try {
+      await fetch('/api/enquiries/update.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status, internalNotes: enquiry?.internalNotes })
+      });
+    } catch {
+      // Backend offline, localStorage already updated
+    }
+
+    return !!enquiry;
   },
 
   async deleteEnquiry(id: string): Promise<boolean> {
     const enquiries = await this.getEnquiries();
     const filtered = enquiries.filter(e => e.id !== id);
     localStorage.setItem(STORAGE_KEYS.ENQUIRIES, JSON.stringify(filtered));
+
+    // Also delete from backend database
+    try {
+      await fetch('/api/enquiries/delete.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+    } catch {
+      // Backend offline, localStorage already updated
+    }
+
+    return true;
+  },
+
+  // REVIEWS
+  async getReviews(filter?: { packageId?: string; reviewType?: string; status?: string }): Promise<Review[]> {
+    let reviews = await fetchWithFallback<Review[]>('/api/reviews/get.php', STORAGE_KEYS.REVIEWS, initialReviews);
+    if (!reviews || !Array.isArray(reviews)) {
+      reviews = initialReviews;
+    }
+    if (filter) {
+      if (filter.packageId) {
+        reviews = reviews.filter(r => r.packageId === filter.packageId);
+      }
+      if (filter.reviewType) {
+        reviews = reviews.filter(r => r.reviewType === filter.reviewType);
+      }
+      if (filter.status) {
+        reviews = reviews.filter(r => r.status === filter.status);
+      }
+    }
+    return reviews;
+  },
+
+  async submitReview(reviewData: Omit<Review, 'id' | 'createdAt' | 'status' | 'source'>): Promise<{ success: boolean; review?: Review; message?: string }> {
+    const newReview: Review = {
+      ...reviewData,
+      id: 'rev-' + Date.now(),
+      source: 'Website',
+      status: 'Approved',
+      createdAt: new Date().toISOString().replace('T', ' ').slice(0, 16)
+    };
+
+    try {
+      const res = await fetch('/api/reviews/create.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newReview)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.review) {
+          const existing = await this.getReviews();
+          existing.unshift(data.review);
+          localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(existing));
+          return { success: true, review: data.review };
+        }
+      }
+    } catch {
+      // Local fallback
+    }
+
+    const reviews = await this.getReviews();
+    reviews.unshift(newReview);
+    localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(reviews));
+    return { success: true, review: newReview };
+  },
+
+  async saveReview(review: Review): Promise<boolean> {
+    const reviews = await this.getReviews();
+    const index = reviews.findIndex(r => r.id === review.id);
+    if (index >= 0) {
+      reviews[index] = review;
+    } else {
+      reviews.unshift(review);
+    }
+    localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(reviews));
+
+    try {
+      await fetch('/api/reviews/update.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(review)
+      });
+    } catch {
+      // Local fallback
+    }
+    return true;
+  },
+
+  async deleteReview(id: string): Promise<boolean> {
+    const reviews = await this.getReviews();
+    const filtered = reviews.filter(r => r.id !== id);
+    localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(filtered));
+
+    try {
+      await fetch('/api/reviews/delete.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+    } catch {
+      // Local fallback
+    }
     return true;
   },
 

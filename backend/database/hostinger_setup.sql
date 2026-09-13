@@ -124,6 +124,27 @@ CREATE TABLE IF NOT EXISTS media (
   file_size INT,
   uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 10. Traveler Reviews Table
+CREATE TABLE IF NOT EXISTS reviews (
+  id VARCHAR(100) PRIMARY KEY,
+  name VARCHAR(150) NOT NULL,
+  email VARCHAR(150),
+  location VARCHAR(150),
+  rating INT NOT NULL DEFAULT 5,
+  review_type ENUM('Package', 'Experience') DEFAULT 'Package',
+  package_id VARCHAR(100) NULL,
+  package_name VARCHAR(255) NULL,
+  experience_type VARCHAR(150) NULL,
+  title VARCHAR(255),
+  comment TEXT NOT NULL,
+  travel_date VARCHAR(50),
+  avatar_url VARCHAR(500),
+  source ENUM('Website', 'Google') DEFAULT 'Website',
+  status ENUM('Approved', 'Pending', 'Hidden') DEFAULT 'Approved',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- Seed Data for Wild Dooars Tours & Travels Database
 -- USE wild_dooars;
 

@@ -29,6 +29,7 @@ import { AdminVehicles } from './pages/admin/AdminVehicles';
 import { AdminHotels } from './pages/admin/AdminHotels';
 import { AdminGallery } from './pages/admin/AdminGallery';
 import { AdminEnquiries } from './pages/admin/AdminEnquiries';
+import { AdminReviews } from './pages/admin/AdminReviews';
 import { AdminMedia } from './pages/admin/AdminMedia';
 import { AdminSettings } from './pages/admin/AdminSettings';
 
@@ -202,6 +203,7 @@ export const AppContent: React.FC = () => {
             <Route path="hotels" element={<AdminHotels />} />
             <Route path="gallery" element={<AdminGallery />} />
             <Route path="enquiries" element={<AdminEnquiries />} />
+            <Route path="reviews" element={<AdminReviews />} />
             <Route path="media" element={<AdminMedia />} />
             <Route path="settings" element={<AdminSettings />} />
           </Route>

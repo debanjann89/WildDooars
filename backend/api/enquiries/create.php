@@ -13,7 +13,13 @@ if (!$input || empty($input['name']) || empty($input['phone']) || empty($input['
 
 $database = new Database();
 $db = $database->getConnection();
+$dbSaved = false;
 $dbError = null;
+
+if (!$db) {
+    $dbError = $database->last_error ?? 'Could not connect to database';
+    error_log("Enquiry DB connection failed: " . $dbError);
+}
 
 if ($db) {
     try {
@@ -34,7 +40,7 @@ if ($db) {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 
-        $id = 'enq-' . time();
+        $id = $input['id'] ?? ('enq-' . time());
         $query = "INSERT INTO enquiries (id, name, phone, email, travel_date, travellers_count, destination, trip_type, vehicle_preference, hotel_preference, message, status) 
                   VALUES (:id, :name, :phone, :email, :travel_date, :travellers_count, :destination, :trip_type, :vehicle_preference, :hotel_preference, :message, 'New')";
         
@@ -52,17 +58,18 @@ if ($db) {
             ':hotel_preference' => htmlspecialchars($input['hotelPreference'] ?? ''),
             ':message' => htmlspecialchars($input['message'] ?? '')
         ]);
+        $dbSaved = true;
     } catch (Throwable $e) {
         $dbError = $e->getMessage();
-        error_log("Enquiry DB insertion warning: " . $dbError);
+        error_log("Enquiry DB insertion failed: " . $dbError);
     }
 }
 
-// Send automated email notifications:
-// 1. Notify Wild Dooars team (wilddooarstoursandtravels@gmail.com)
+// Send automated email notifications (even if DB fails, still try email):
+// 1. Notify Wild Dooars team
 $adminMailSent = Mailer::sendAdminNotification($input);
 
-// 2. Send instant confirmation receipt to customer (if email provided)
+// 2. Send instant confirmation receipt to customer
 $customerMailSent = false;
 if (!empty($input['email'])) {
     $customerMailSent = Mailer::sendCustomerConfirmation($input);
@@ -71,6 +78,7 @@ if (!empty($input['email'])) {
 echo json_encode([
     'success' => true,
     'message' => 'Thank you! Your enquiry has been received. Our travel team will contact you shortly.',
+    'db_saved' => $dbSaved,
     'mail_sent' => [
         'admin' => $adminMailSent,
         'customer' => $customerMailSent
